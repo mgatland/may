@@ -4,22 +4,22 @@ const levelWidth = 35
 const level = 
 //234567890123456789012345678901234<-- end
 `
-X       X       X       X       X X
-X       X       X       X       X X
-X       X       X       X       X X
-XXXXXXXXX       X       X       X X
-X       X       X       X       X X
-X       X       X       X       X X
-X       X       X       X       X X
-X       X       X       X       X X
-X       X       X       X       X X
-X       X       X       X       X X
-X       X       X       X       X X
-X       X       X       X       X X
-X       X       X       X       X X
-X       X       X       X       X X
-X       X       X       X       X X
-X       X       X       X       X X
+X       X       X       X         X
+X       X       X       X         X
+X       X       X       X         X
+XXXXXXXXX       X       X         X
+X       X       X       X         X
+X       X       X       X         X
+X       X       X       X         X
+X       X       X       X         X
+X       X       X       X         X
+X       X                         X
+X                                 X
+X                                 X
+X                                 X
+X                       XXXXXXXXX X
+X                       X       X X
+XXXXXXXXX       XXXXXXXXX       X X
 X       X       X       X       X X
 X       X       X       X       X X
 X       X       X       X       X X

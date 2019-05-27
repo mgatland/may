@@ -144,15 +144,22 @@ function getPixelsFromIndex(i) {
 
 function getCollidingTiles(pos) {
   const { x, y } = pos
-  const topLeftX = Math.floor(x - tileSize / 2)
-  const topLeftY = Math.floor(y - tileSize / 2)
-  const topLeftI = getIndexFromPixels(topLeftX, topLeftY)
-  if (level[topLeftI] === 1) {
-    return { x: topLeftX , y: topLeftY }
-  } else {
-    return null
+  const tilesToCheck = [ [ -1, -1 ], [ 1, -1 ], [ -1, 1 ], [ 1, 1 ] ]
+
+  let collidingTile = null
+  for (const [xOffset, yOffset] of tilesToCheck) {
+    const tileX = Math.floor(x + (xOffset * tileSize / 2))
+    const tileY = Math.floor(y + (yOffset * tileSize / 2))
+    const tileIndex = getIndexFromPixels(tileX, tileY)
+    if (level[tileIndex] === 1) {
+      collidingTile = { x: tileX , y: tileY }
+    }
   }
+
+  return collidingTile
 }
+
+window.test = getCollidingTiles
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height)

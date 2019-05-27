@@ -5,6 +5,7 @@ import {startEditor} from "/editor.js"
 const scale = 4
 const tileSize = 8
 const levelWidth = 35
+const tileSize = 8
 const level = 
 //234567890123456789012345678901234<-- end
 `
@@ -59,7 +60,7 @@ function switchKey(key, state) {
       keys.left = state
       break
     case 'ArrowRight':
-    case 'a':
+    case 'd':
       keys.right = state
       break
     case 'ArrowUp':
@@ -108,10 +109,51 @@ function tick() {
   player.vel.y += 0.01
   player.pos.x += player.vel.x
   player.pos.y += player.vel.y
+
+  const collidedTile = collidingTile(player.pos)
+  if (collidedTile !== null) {
+    // left / right
+    const i = getIndexFromPixels(collidedTile.x, collidedTile.y) +
+      (player.vel.x < 0 ? 1 : -1)
+    const { x : newX, y : newY } = getPixelsFromIndex(i)
+    player.pos.x = newX + tileSize / 2
+    player.vel.x = 0
+    player.vel.y = 0
+  } else {
+  }
   draw()
 }
 
+function getIndexFromPixels(x, y) {
+  return Math.floor((y / tileSize)) * levelWidth + Math.floor((x / tileSize))
+}
+
+function getPixelsFromIndex(i) {
+  return { x: (i % levelWidth) * tileSize, y: Math.floor(i / levelWidth) * tileSize}
+}
+
+function collidingTile(pos) {
+  const { x, y } = pos
+  const topLeftX = Math.floor(x - tileSize / 2)
+  const topLeftY = Math.floor(y - tileSize / 2)
+  const topLeftI = getIndexFromPixels(topLeftX, topLeftY)
+  if (level[topLeftI] === 1) {
+    return { x: topLeftX , y: topLeftY }
+  } else {
+    return null
+  }
+}
+
+function drawLevel() {
+  for (let i = 0; i < level.length; i++) {
+    const x = (i % levelWidth) + 0.5
+    const y = Math.floor(i / levelWidth) + 0.5
+    drawSprite(level[i], x * tileSize, y * tileSize)
+  }
+}
+
 function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
   drawLevel()
   drawSprite(2, player.pos.x, player.pos.y)
   requestAnimationFrame(tick)

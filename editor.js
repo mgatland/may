@@ -9,7 +9,6 @@ export function startEditor (canvas, scale, level, levelWidth, tileSize) {
     const pos = getMouseXYFromEvent(e)
     const tile = {x: Math.floor(pos.x / 8), y: Math.floor(pos.y / 8)}
     const i = tile.x + tile.y * levelWidth
-    console.log(e)
     if (e.buttons === 1) {
       level[i] = 1
     }

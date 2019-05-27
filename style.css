@@ -1,7 +1,14 @@
+@font-face {
+	font-family: "uni 05_64";
+	src: url("/uni0564-webfont.woff");
+}
+
 html, body { 
   margin: 0; 
 	width:  100%;
-  height: 100%;
+	height: 100%;
+	font-family: "uni 05_64";
+	color: white;
 }
 
 body {

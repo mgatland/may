@@ -5,6 +5,7 @@ import {startEditor} from "/editor.js"
 const scale = 4
 const levelWidth = 35
 const tileSize = 8
+let frame = 0
 const level = 
 //234567890123456789012345678901234<-- end
 `
@@ -20,15 +21,16 @@ X       X       X       X         X
 X       X                         X
 X                                 X
 X                                 X
-X                                 X
+X                           t     X
 X                       XXXXXXXXX X
-X                       X       X X
+X                  t v  X       X X
 XXXXXXXXX       XXXXXXXXX       X X
 X       X       X       X       X X
 X       X       X       X       X X
 X       X       X       X       X X
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-`.replace(/X/g, "1").replace(/ /g, "0").replace(/\n/g, "").split("").map(x => parseInt(x))
+`.replace(/X/g, "1").replace(/ /g, "0")
+.replace(/\n/g, "").replace(/t/g, "3").replace(/v/g, "5").split("").map(x => parseInt(x))
 
 
 const canvas = document.querySelector("canvas")
@@ -79,6 +81,7 @@ window.addEventListener("keyup", function (e) {
 
 function drawSprite(index, x, y) {
   if (index == 0) return //empty space hack
+  if (index == 3 && frame > 40) index++ //animated bird hack
   const width = 8
   const height = 8
   x *= scale
@@ -89,7 +92,16 @@ function drawSprite(index, x, y) {
 		width, height,
 	  -width/2*scale, -height/2*scale,
 	  width*scale, height*scale)
-	ctx.translate(-x, -y)
+  ctx.translate(-x, -y)
+  
+  if (index === 3 || index === 4) {
+    //more animated bird hacks
+    ctx.font = "16px 'uni 05_64'"
+    ctx.fillStyle = "black"
+    ctx.textAlign = "center"
+    ctx.baseLine = "bottom"
+    ctx.fillText("Hello!", x, y - 8 * scale, 300)
+  }
 }
 
 const player = {
@@ -102,6 +114,7 @@ function start() {
 }
 
 function tick() {
+  frame = (frame + 1) % 60
   if (keys.right) player.vel.x += 0.1
   if (keys.left) player.vel.x -= 0.1
   if (keys.up) player.vel.y -= 0.1

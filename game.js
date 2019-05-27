@@ -3,7 +3,6 @@
 import {startEditor} from "/editor.js"
 
 const scale = 4
-const tileSize = 8
 const levelWidth = 35
 const tileSize = 8
 const level = 
@@ -141,14 +140,6 @@ function collidingTile(pos) {
     return { x: topLeftX , y: topLeftY }
   } else {
     return null
-  }
-}
-
-function drawLevel() {
-  for (let i = 0; i < level.length; i++) {
-    const x = (i % levelWidth) + 0.5
-    const y = Math.floor(i / levelWidth) + 0.5
-    drawSprite(level[i], x * tileSize, y * tileSize)
   }
 }
 

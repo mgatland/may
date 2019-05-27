@@ -45,6 +45,33 @@ function drawLevel() {
   }
 }
 
+const keys = {up: false, left: false, right: false}
+
+function switchKey(key, state) {
+	switch (key) {
+		case 'ArrowLeft':
+    case 'a':
+      keys.left = state
+      break
+    case 'ArrowRight':
+    case 'a':
+      keys.right = state
+      break
+    case 'ArrowUp':
+    case 'w':
+      keys.up = state
+      break
+	}
+}
+
+window.addEventListener("keydown", function (e) {
+  switchKey(e.key, true)
+})
+
+window.addEventListener("keyup", function (e) {
+  switchKey(e.key, false)
+})
+
 function drawSprite(index, x, y) {
   if (index == 0) return //empty space hack
   const width = 8
@@ -61,6 +88,27 @@ function drawSprite(index, x, y) {
 	ctx.translate(-x, -y)
 }
 
+const player = {
+  pos: {x: 30, y: 60},
+  vel: {x: 0, y: 0}
+}
+
 function start() {
+  tick()
+}
+
+function tick() {
+  if (keys.right) player.vel.x += 0.1
+  if (keys.left) player.vel.x -= 0.1
+  if (keys.up) player.vel.y -= 0.1
+  player.vel.y += 0.01
+  player.pos.x += player.vel.x
+  player.pos.y += player.vel.y
+  draw()
+}
+
+function draw() {
   drawLevel()
+  drawSprite(2, player.pos.x, player.pos.y)
+  requestAnimationFrame(tick)
 }

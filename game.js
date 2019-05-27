@@ -1,6 +1,7 @@
 "use strict"
 
 const levelWidth = 35
+const tileSize = 8
 const level = 
 //234567890123456789012345678901234<-- end
 `
@@ -37,7 +38,6 @@ spriteImage.addEventListener('load', function() {
 }, false)
 
 function drawLevel() {
-  const tileSize = 8
   for (let i = 0; i < level.length; i++) {
     const x = (i % levelWidth) + 0.5
     const y = Math.floor(i / levelWidth) + 0.5
@@ -54,7 +54,7 @@ function switchKey(key, state) {
       keys.left = state
       break
     case 'ArrowRight':
-    case 'a':
+    case 'd':
       keys.right = state
       break
     case 'ArrowUp':
@@ -104,10 +104,38 @@ function tick() {
   player.vel.y += 0.01
   player.pos.x += player.vel.x
   player.pos.y += player.vel.y
+
+  if (isColliding(player.pos)) {
+    level[0] = 0
+    console.log('hit!')
+  } else {
+    level[0] = 1
+  }
   draw()
 }
 
+function getIndexFromPixels(x, y) {
+  return Math.floor((y / tileSize)) * levelWidth + Math.floor((x / tileSize))
+}
+
+function isColliding(pos) {
+  const { x, y } = pos
+  const topLeftX = Math.floor(x - tileSize / 2)
+  const topLeftY = Math.floor(y - tileSize / 2)
+  const topLeftI = getIndexFromPixels(topLeftX, topLeftY)
+  return level[topLeftI] === 1
+}
+
+function drawLevel() {
+  for (let i = 0; i < level.length; i++) {
+    const x = (i % levelWidth) + 0.5
+    const y = Math.floor(i / levelWidth) + 0.5
+    drawSprite(level[i], x * tileSize, y * tileSize)
+  }
+}
+
 function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
   drawLevel()
   drawSprite(2, player.pos.x, player.pos.y)
   requestAnimationFrame(tick)

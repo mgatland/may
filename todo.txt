@@ -1,0 +1,7 @@
+todo
+
+player can move between screens
+storing multiple screens
+better level editor
+hazards
+a goal - narrative \ worldbuilding

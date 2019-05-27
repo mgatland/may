@@ -88,8 +88,11 @@ function drawSprite(index, x, y) {
   x *= scale
   y *= scale
   ctx.translate(x, y)
+
+  const sX = (index % 16) * width
+  const sY = Math.floor(index / 16) * height
 	ctx.drawImage(spriteImage, 
-		index * width, 0, 
+		sX, sY, 
 		width, height,
 	  -width/2*scale, -height/2*scale,
 	  width*scale, height*scale)

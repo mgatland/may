@@ -1,5 +1,9 @@
 "use strict"
 
+import {startEditor} from "/editor.js"
+
+const scale = 4
+const tileSize = 8
 const levelWidth = 35
 const level = 
 //234567890123456789012345678901234<-- end
@@ -36,8 +40,9 @@ spriteImage.addEventListener('load', function() {
   start()
 }, false)
 
+startEditor(canvas, scale, level, levelWidth, tileSize)
+
 function drawLevel() {
-  const tileSize = 8
   for (let i = 0; i < level.length; i++) {
     const x = (i % levelWidth) + 0.5
     const y = Math.floor(i / levelWidth) + 0.5
@@ -76,7 +81,6 @@ function drawSprite(index, x, y) {
   if (index == 0) return //empty space hack
   const width = 8
   const height = 8
-  const scale = 4
   x *= scale
   y *= scale
   ctx.translate(x, y)

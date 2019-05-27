@@ -1,0 +1,27 @@
+html, body { 
+  margin: 0; 
+	width:  100%;
+  height: 100%;
+}
+
+body {
+	background-color: black;
+	display:flex;
+	align-items: center;
+}
+
+.gameCanvas {
+	display:block;
+	background-color: white;
+	height: 100%;
+	margin: auto;
+	image-rendering: crisp-edges;
+}
+
+
+@media screen and (max-aspect-ratio: 16/9) {
+	.gameCanvas {
+		height: auto;
+		width:100%;
+	}
+}

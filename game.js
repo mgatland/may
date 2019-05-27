@@ -105,11 +105,16 @@ function tick() {
   player.pos.x += player.vel.x
   player.pos.y += player.vel.y
 
-  if (isColliding(player.pos)) {
-    level[0] = 0
-    console.log('hit!')
+  const collidedTile = collidingTile(player.pos)
+  if (collidedTile !== null) {
+    // left / right
+    const i = getIndexFromPixels(collidedTile.x, collidedTile.y) +
+      (player.vel.x < 0 ? 1 : -1)
+    const { x : newX, y : newY } = getPixelsFromIndex(i)
+    player.pos.x = newX + tileSize / 2
+    player.vel.x = 0
+    player.vel.y = 0
   } else {
-    level[0] = 1
   }
   draw()
 }
@@ -118,12 +123,20 @@ function getIndexFromPixels(x, y) {
   return Math.floor((y / tileSize)) * levelWidth + Math.floor((x / tileSize))
 }
 
-function isColliding(pos) {
+function getPixelsFromIndex(i) {
+  return { x: (i % levelWidth) * tileSize, y: Math.floor(i / levelWidth) * tileSize}
+}
+
+function collidingTile(pos) {
   const { x, y } = pos
   const topLeftX = Math.floor(x - tileSize / 2)
   const topLeftY = Math.floor(y - tileSize / 2)
   const topLeftI = getIndexFromPixels(topLeftX, topLeftY)
-  return level[topLeftI] === 1
+  if (level[topLeftI] === 1) {
+    return { x: topLeftX , y: topLeftY }
+  } else {
+    return null
+  }
 }
 
 function drawLevel() {

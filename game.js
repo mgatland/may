@@ -30,7 +30,7 @@ X       X       X       X       X X
 X       X       X       X       X X
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 `.replace(/X/g, "1").replace(/ /g, "0")
-.replace(/\n/g, "").replace(/t/g, "3").replace(/v/g, "5").split("").map(x => parseInt(x))
+.replace(/\n/g, "").replace(/t/g, "3").replace(/v/g, "6").split("").map(x => parseInt(x))
 
 
 const canvas = document.querySelector("canvas")
@@ -82,6 +82,7 @@ window.addEventListener("keyup", function (e) {
 function drawSprite(index, x, y) {
   if (index == 0) return //empty space hack
   if (index == 3 && frame > 40) index++ //animated bird hack
+  if (index == 6 && frame > 30) index++ //animated flower hack
   const width = 8
   const height = 8
   x *= scale

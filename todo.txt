@@ -3,7 +3,7 @@ todo
 [x] player can move between screens
 [x] storing multiple screens
 [x] multi-screen level editor
-room titles
+[x] room titles
 hazards
 narrative \ worldbuilding
 player can align into 1-block gaps

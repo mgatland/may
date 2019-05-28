@@ -13,7 +13,8 @@ const roomSrc =
 const rooms = Object.assign({}, ...Object.keys(roomSrc).map(key => ({[key]: editor.rleDecode(roomSrc[key])})));
 
 const roomNames = {
-  "0x0": "Skyscraper"
+  "0x0": "Skyscraper",
+  "1x0": "Uptown",
 }
 const location = {x: 0, y: 0, toString: function () {return this.x + "x" + this.y}}
 
@@ -32,6 +33,9 @@ function changeRoom(location) {
 const canvas = document.querySelector("canvas")
 const ctx = canvas.getContext("2d")
 ctx.imageSmoothingEnabled = false
+ctx.font = "16px 'uni 05_64'"
+ctx.fillStyle = "white"
+ctx.baseLine = "bottom"
 const spriteImage = new Image()
 spriteImage.src = 'sprites.png'
 spriteImage.addEventListener('load', function() {
@@ -49,6 +53,9 @@ function drawLevel() {
     const y = Math.floor(i / levelWidth) + 0.5
     drawSprite(level[i], x * tileSize, y * tileSize)
   }
+  const roomName = roomNames[location.toString()] || location.toString()
+  ctx.textAlign = "center"
+  ctx.fillText(roomName, tileSize * (levelWidth / 2) * scale, 18 + tileSize * scale)
 }
 
 const keys = {up: false, left: false, right: false}
@@ -99,10 +106,7 @@ function drawSprite(index, x, y) {
   
   if (index === 3 || index === 4) {
     //more animated bird hacks
-    ctx.font = "16px 'uni 05_64'"
-    ctx.fillStyle = "black"
     ctx.textAlign = "center"
-    ctx.baseLine = "bottom"
     ctx.fillText("Hello!", x, y - 8 * scale, 300)
   }
 }

@@ -111,12 +111,20 @@ function start() {
   tick()
 }
 
+const maxXVel = 2
+const xAccel = 0.1
+const xDecel = 0.05
+
+function isGrounded(ent) {
+  return !!getCollidingTiles({x: ent.pos.x, y:ent.pos.y + 0.1})
+}
+
 function tick() {
   frame = (frame + 1) % 60
-  if (keys.right) player.vel.x += 0.1
-  if (keys.left) player.vel.x -= 0.1
-  if (keys.up) player.vel.y -= 0.1
-  player.vel.y += 0.01
+  if (keys.right && player.vel.x < maxXVel) player.vel.x += xAccel
+  else if (keys.left && player.vel.x > -maxXVel) player.vel.x -= xAccel
+  else if (!keys.left && player.vel.x < 0 && isGrounded(player)) player.vel.x += Math.min(-player.vel.x, xDecel)
+  else if (!keys.right && player.vel.x > 0 && isGrounded(player)) player.vel.x -= Math.min(player.vel.x, xDecel)
 
   // check collisions x
   player.pos.x += player.vel.x
@@ -129,6 +137,13 @@ function tick() {
     player.pos.x = clearX + tileSize / 2
     player.vel.x = 0
   }
+
+  if (keys.up && isGrounded(player)) {
+    player.vel.y -= 1.8
+    player.vel.y -= Math.abs(player.vel.x / 4)
+  }
+  player.vel.y += 0.1
+
   // check collisions y
   player.pos.y += player.vel.y
 

@@ -46,6 +46,7 @@ function saveLevelString(rooms) {
 }
 
 let level = null
+let brush = 1
 
 export const editor = {
   setLevel: function setLevel(newLevel) {
@@ -64,7 +65,7 @@ export const editor = {
       const tile = {x: Math.floor(pos.x / 8), y: Math.floor(pos.y / 8)}
       const i = tile.x + tile.y * levelWidth
       if (e.buttons === 1) {
-        level[i] = 1
+        level[i] = brush
         saveLevelString(rooms)
       }
       if (e.buttons === 2) {
@@ -77,6 +78,21 @@ export const editor = {
     canvas.addEventListener("mousedown", mouseMove)
     canvas.addEventListener("contextmenu", function (e) {
       e.preventDefault()
+    })
+
+    const brushes = {
+      "1": 1,
+      "2": 2,
+      "3": 3,
+      "4": 4,
+      "5": 5,
+      "6": 6,
+      "7": 7,
+      "8": 8
+    }
+
+    window.addEventListener("keydown", function (e) {
+      brush = brushes[e.key] || brush
     })
   },
   rleDecode,

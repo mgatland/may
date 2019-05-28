@@ -43,7 +43,9 @@ function saveLevelString(rooms) {
     rleRooms[key] = rleEncode(rooms[key])
   }
   const dataEl = document.querySelector(".levelData")
-  dataEl.innerText = JSON.stringify(rleRooms)
+  const dataAsString = JSON.stringify(rleRooms)
+  dataEl.innerText = dataAsString
+  localStorage.setItem("github.com/mgatland/may/map", dataAsString) //key is duplicated
   console.log(level.length)
 }
 

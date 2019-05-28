@@ -4,15 +4,23 @@ todo
 [x] storing multiple screens
 [x] multi-screen level editor
 [x] room titles
-hazards
-narrative \ worldbuilding
-player can align into 1-block gaps
 
+[ ] load different NPCs on each level
+[ ] count total number of undelivered letters
+[ ] special start-screen NPCs you can greet before you get the letters
+[ ] special NPC who gives you the letters
+[ ] title screen with credits (including the font)
+
+low priority:
+[ ] environmental hazards (implies: losing \ reloading)
+    maybe we can have button \ gate \ timing puzzles with no death.
+[ ] make it so the player can align into 1-block gaps
+
+ideas:
 people look at you, except one person who looks away
 
 oh, they're having a party? i wish YOU were having a party
 
 oh i suppose i could attend that
-
 
 tell player about running jump

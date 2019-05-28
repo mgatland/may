@@ -16,7 +16,7 @@ function rleEncode(level) {
   }
   out.push(prev)
   out.push(amount)
-  return JSON.stringify(out)
+  return out
 }
 
 function rleDecode(levelData) {
@@ -35,16 +35,23 @@ function rleDecode(levelData) {
   return level
 }
 
-function saveLevelString(level) {
+function saveLevelString(rooms) {
+  const rleRooms = {}
+  for (const key in rooms) {
+    rleRooms[key] = rleEncode(rooms[key])
+  }
   const dataEl = document.querySelector(".levelData")
-  dataEl.innerText = rleEncode(level)
+  dataEl.innerText = JSON.stringify(rleRooms)
   console.log(level.length)
 }
 
-
+let level = null
 
 export const editor = {
-  startEditor: function startEditor (canvas, scale, level, levelWidth, tileSize) {
+  setLevel: function setLevel(newLevel) {
+    level = newLevel
+  },
+  startEditor: function startEditor (canvas, scale, rooms, levelWidth, tileSize) {
 
     function getMouseXYFromEvent(e) {
       const x = event.offsetX * canvas.width / canvas.offsetWidth / scale
@@ -58,11 +65,11 @@ export const editor = {
       const i = tile.x + tile.y * levelWidth
       if (e.buttons === 1) {
         level[i] = 1
-        saveLevelString(level)
+        saveLevelString(rooms)
       }
       if (e.buttons === 2) {
         level[i] = 0
-        saveLevelString(level)
+        saveLevelString(rooms)
       }
     }
 

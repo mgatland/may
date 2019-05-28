@@ -117,19 +117,28 @@ function tick() {
   if (keys.left) player.vel.x -= 0.1
   if (keys.up) player.vel.y -= 0.1
   player.vel.y += 0.01
+
+  // check collisions x
   player.pos.x += player.vel.x
+
+  const collidingTile = getCollidingTiles(player.pos)
+  if (collidingTile !== null) {
+    const clearTileIndex = getIndexFromPixels(collidingTile.x, collidingTile.y) +
+      (player.vel.x < 0 ? 1 : -1) // move player one tile left or right
+    const { x : clearX } = getPixelsFromIndex(clearTileIndex)
+    player.pos.x = clearX + tileSize / 2
+    player.vel.x = 0
+  }
+  // check collisions y
   player.pos.y += player.vel.y
 
-  const collidedTile = null//collidingTile(player.pos)
-  if (collidedTile !== null) {
-    // left / right
-    const i = getIndexFromPixels(collidedTile.x, collidedTile.y) +
-      (player.vel.x < 0 ? 1 : -1)
-    const { x : newX, y : newY } = getPixelsFromIndex(i)
-    player.pos.x = newX + tileSize / 2
-    player.vel.x = 0
+  const collidingTileY = getCollidingTiles(player.pos)
+  if (collidingTileY !== null) {
+    const clearTileIndex = getIndexFromPixels(collidingTileY.x, collidingTileY.y) +
+      (player.vel.y < 0 ? levelWidth : -levelWidth) // move player one tile up or down
+    const { y : clearY } = getPixelsFromIndex(clearTileIndex)
+    player.pos.y = clearY + tileSize / 2
     player.vel.y = 0
-  } else {
   }
 
   //Room transitions
@@ -158,6 +167,8 @@ function tick() {
     editor.setLevel(level)
   }
   draw()
+  // ctx.fillText(`Player X pos: ${player.pos.x}`, 50, 50)
+  // ctx.fillText(`Player Y pos: ${player.pos.y}`, 50, 70)
 }
 
 function getIndexFromPixels(x, y) {
@@ -168,16 +179,24 @@ function getPixelsFromIndex(i) {
   return { x: (i % levelWidth) * tileSize, y: Math.floor(i / levelWidth) * tileSize}
 }
 
-function collidingTile(pos) {
+function getCollidingTiles(pos) {
   const { x, y } = pos
-  const topLeftX = Math.floor(x - tileSize / 2)
-  const topLeftY = Math.floor(y - tileSize / 2)
-  const topLeftI = getIndexFromPixels(topLeftX, topLeftY)
-  if (level[topLeftI] === 1) {
-    return { x: topLeftX , y: topLeftY }
-  } else {
-    return null
+  const halfTile = tileSize / 2
+  const tilesToCheck = [ 
+    [ -halfTile, -halfTile, 'topLeft' ],
+    [ halfTile - .001, -halfTile, 'topRight' ],
+    [ -halfTile, halfTile - .001, 'bottomLeft' ],
+    [ halfTile - .001, halfTile - .001, 'bottomRight' ]
+  ]
+  for (const [xOffset, yOffset] of tilesToCheck) {
+    const tileX = Math.floor(x + xOffset)
+    const tileY = Math.floor(y + yOffset)
+    const tileIndex = getIndexFromPixels(tileX, tileY)
+    if (level[tileIndex] === 1) {
+      return { x: tileX , y: tileY }
+    }
   }
+  return null
 }
 
 function draw() {

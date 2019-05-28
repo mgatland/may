@@ -109,7 +109,7 @@ function tick() {
 
   // check collisions x
   player.pos.x += player.vel.x
-  
+
   const collidingTile = getCollidingTiles(player.pos)
   if (collidingTile !== null) {
     const clearTileIndex = getIndexFromPixels(collidingTile.x, collidingTile.y) +
@@ -118,7 +118,6 @@ function tick() {
     player.pos.x = clearX + tileSize / 2
     player.vel.x = 0
   }
-
   // check collisions y
   player.pos.y += player.vel.y
 
@@ -132,6 +131,8 @@ function tick() {
   }
 
   draw()
+  // ctx.fillText(`Player X pos: ${player.pos.x}`, 50, 50)
+  // ctx.fillText(`Player Y pos: ${player.pos.y}`, 50, 70)
 }
 
 function getIndexFromPixels(x, y) {
@@ -144,22 +145,23 @@ function getPixelsFromIndex(i) {
 
 function getCollidingTiles(pos) {
   const { x, y } = pos
-  const tilesToCheck = [ [ -1, -1 ], [ 1, -1 ], [ -1, 1 ], [ 1, 1 ] ]
-
-  let collidingTile = null
+  const halfTile = tileSize / 2
+  const tilesToCheck = [ 
+    [ -halfTile, -halfTile, 'topLeft' ],
+    [ halfTile - .001, -halfTile, 'topRight' ],
+    [ -halfTile, halfTile - .001, 'bottomLeft' ],
+    [ halfTile - .001, halfTile - .001, 'bottomRight' ]
+  ]
   for (const [xOffset, yOffset] of tilesToCheck) {
-    const tileX = Math.floor(x + (xOffset * tileSize / 2))
-    const tileY = Math.floor(y + (yOffset * tileSize / 2))
+    const tileX = Math.floor(x + xOffset)
+    const tileY = Math.floor(y + yOffset)
     const tileIndex = getIndexFromPixels(tileX, tileY)
     if (level[tileIndex] === 1) {
-      collidingTile = { x: tileX , y: tileY }
+      return { x: tileX , y: tileY }
     }
   }
-
-  return collidingTile
+  return null
 }
-
-window.test = getCollidingTiles
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height)

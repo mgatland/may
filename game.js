@@ -15,17 +15,29 @@ const roomSrc =
 const rooms = Object.assign({}, ...Object.keys(roomSrc).map(key => ({[key]: editor.rleDecode(roomSrc[key])})));
 
 const roomDatas = {
-  "0x0": {name: "Snailtown"}, //Towerland
-  "1x0": {name:"Uptown"},
+  "0x0": {name: "Snailtown", 
+  npcs: [
+    {questGiver: true, text: "Good morning!\nWould you please deliver\nthese invitations?"}
+  ]},
+  "1x0": {name:"Uptown",
+  npcs: [
+    {text: "An invitation?\nThe party is finally happening!"}
+  ]
+},
 }
+
+//Towerland
+
 const location = {x: 0, y: 0, toString: function () {return this.x + "x" + this.y}}
 
 const npcPlaceholder = 13
-const npcs = [
-  {questGiver: true, active: false, text: "Good morning!\nWould you please deliver\nthese invitations?", pos:{x: 0, y: 0}},
-]
+let npcs = []
 
-const undefinedNpc = {active: true, text: "I'm undefined", pos:{x: 0, y: 0}}
+const undefinedNpc = {active: true, text: "I'm undefined"}
+
+function getRoomData(location) {
+  return roomDatas[location.toString()]
+}
 
 function changeRoom(location) {
   function getRoom(location) {
@@ -39,6 +51,10 @@ function changeRoom(location) {
   editor.setLevel(level)
 
   //get NPCs
+  let roomData = getRoomData(location) || {npcs: []}
+
+  npcs = roomData.npcs
+  npcs.forEach(npc => {npc.active = !!npc.active; npc.pos = npc.pos || {x: 32, y: 32}})
   let npcNum = 0
   level.forEach((value, i) => {
     if (value === npcPlaceholder) {
@@ -81,7 +97,7 @@ function drawLevel() {
       drawSprite(level[i], x * tileSize, y * tileSize)
     }
   }
-  const roomData = roomDatas[location.toString()]
+  const roomData = getRoomData(location)
   ctx.textAlign = "center"
   const roomName = roomData ? roomData.name : location.toString()
   ctx.fillText(roomName, tileSize * (levelWidth / 2) * scale, 24 + 0 * tileSize * scale)

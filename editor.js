@@ -1,3 +1,5 @@
+const npcPlaceholder = 13 //duplicated
+
 function rleEncode(level) {
   const out = []
   let prev = null
@@ -90,6 +92,7 @@ export const editor = {
       "7": 7,
       "8": 8,
       "9": 2,
+      "0": npcPlaceholder,
     }
 
     window.addEventListener("keydown", function (e) {

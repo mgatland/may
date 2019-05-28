@@ -9,15 +9,22 @@ const tileSize = 8
 let frame = 0
 const roomSrc =
 
-{"0x0":[0,14,11,7,0,3,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,16,11,7,0,3,1,1,0,7,1,1,0,26,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,2,1,9,0,15,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,2,1,1,0,7,1,1,0,4,1,9,0,2,1,1,0,7,1,1,0,2,1,1,0,7,1,1,11,4,1,1,9,7,1,1,11,2,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,2,1,6,0,2,1,1,0,4,1,1,9,1,0,2,9,1,12,1,9,2,1,1,0,2,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,2,1,1,0,7,1,1,0,4,1,1,9,1,0,1,9,1,0,1,9,3,1,1,0,2,1,1,0,7,1,1,0,2,1,1,0,7,1,1,0,4,1,1,9,1,0,3,9,3,1,1,0,2,1,9,0,2,1,1,0,2,1,6,0,4,1,1,9,7,1,1,0,13,1,1,0,12,1,9,0,13,1,1,0,34,1,9,0,19,3,1,0,3,1,4,0,7,1,1,0,15,1,9,0,2,1,1,0,7,1,9,0,2,3,1,0,1,6,1,0,2,1,1,0,7,1,1,0,2,1,6,0,2,1,1,9,7,1,9,0,1,1,2,0,1,1,2,0,1,1,1,0,1,1,2,0,7,1,1,9,1,10,2,9,1,10,2,9,1,1,1,0,7,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,1,1,2,0,7,1,1,9,1,10,2,9,1,10,2,9,1,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,7,1,1,0,2,1,1,0,2,1,6,9,7,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,7,1,1,0,2,1,1,0,7,1,1,9,7,1,1,0,7,1,11,9,1],"1x0":[1,1,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,10,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,25,1,2,0,7,1,1,0,25,1,2,0,33,1,2,0,27,3,1,0,5,1,2,0,23,1,9,0,1,1,2,0,18,3,1,0,1,6,1,0,2,1,1,0,7,1,1,0,1,1,10,0,7,1,9,0,7,1,1,0,1,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,7,1,1,0,1,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,7,1,1,0,1,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,7,1,1,0,1,1,36],"0x1":[0,426,1,1,0,8,1,1,0,25,1,1,0,8,1,1,0,25,1,1,0,8,1,1,0,25,1,10,0,159]}
+{"0x0":[0,14,11,7,0,3,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,16,11,7,0,3,1,1,0,7,1,1,0,26,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,2,1,9,0,15,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,2,1,1,0,7,1,1,0,4,1,9,0,2,1,1,0,7,1,1,0,2,1,1,0,7,1,1,11,4,1,1,9,7,1,1,11,2,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,2,1,6,0,2,1,1,0,4,1,1,9,1,0,2,9,1,12,1,9,2,1,1,0,2,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,2,1,1,0,7,1,1,0,4,1,1,9,1,0,1,9,1,0,1,9,3,1,1,0,2,1,1,0,7,1,1,0,2,1,1,0,7,1,1,0,4,1,1,9,1,0,3,9,3,1,1,0,2,1,9,0,2,1,1,0,2,1,6,0,4,1,1,9,7,1,1,0,13,1,1,0,12,1,9,0,13,1,1,0,34,1,9,0,19,13,1,0,3,1,4,0,7,1,1,0,15,1,9,0,2,1,1,0,7,1,9,0,2,13,1,0,1,6,1,0,2,1,1,0,7,1,1,0,2,1,6,0,2,1,1,9,7,1,9,0,1,1,2,0,1,1,2,0,1,1,1,0,1,1,2,0,7,1,1,9,1,10,2,9,1,10,2,9,1,1,1,0,7,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,1,1,2,0,7,1,1,9,1,10,2,9,1,10,2,9,1,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,7,1,1,0,2,1,1,0,2,1,6,9,7,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,7,1,1,0,2,1,1,0,7,1,1,9,7,1,1,0,7,1,11,9,1],"1x0":[1,1,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,10,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,25,1,2,0,7,1,1,0,25,1,2,0,33,1,2,0,27,3,1,0,5,1,2,0,23,1,9,0,1,1,2,0,18,3,1,0,1,6,1,0,2,1,1,0,7,1,1,0,1,1,10,0,7,1,9,0,7,1,1,0,1,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,7,1,1,0,1,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,7,1,1,0,1,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,7,1,1,0,1,1,36],"0x1":[0,426,1,1,0,8,1,1,0,25,1,1,0,8,1,1,0,25,1,1,0,8,1,1,0,25,1,10,0,159]}
 
 const rooms = Object.assign({}, ...Object.keys(roomSrc).map(key => ({[key]: editor.rleDecode(roomSrc[key])})));
 
-const roomNames = {
-  "0x0": "Snailtown", //Towerland
-  "1x0": "Uptown",
+const roomDatas = {
+  "0x0": {name: "Snailtown"}, //Towerland
+  "1x0": {name:"Uptown"},
 }
 const location = {x: 0, y: 0, toString: function () {return this.x + "x" + this.y}}
+
+const npcPlaceholder = 13
+const npcs = [
+  {active: false, text: "Hello! How's it going?", pos:{x: 0, y: 0}},
+]
+
+const undefinedNpc = {active: true, text: "I'm undefined", pos:{x: 0, y: 0}}
 
 function changeRoom(location) {
   function getRoom(location) {
@@ -29,6 +36,22 @@ function changeRoom(location) {
   }
   level = getRoom(location)
   editor.setLevel(level)
+
+  //get NPCs
+  let npcNum = 0
+  level.forEach((value, i) => {
+    if (value === npcPlaceholder) {
+      let npc = npcs[npcNum]
+      if (!npc) {
+        npc = undefinedNpc
+        npcs.push(npc)
+      }
+      npcNum++
+      npc.pos = getPixelsFromIndex(i)
+      npc.pos.x += tileSize / 2
+      npc.pos.y += tileSize / 2
+    }
+  })
 }
 
 const canvas = document.querySelector("canvas")
@@ -52,11 +75,31 @@ function drawLevel() {
   for (let i = 0; i < level.length; i++) {
     const x = (i % levelWidth) + 0.5
     const y = Math.floor(i / levelWidth) + 0.5
-    drawSprite(level[i], x * tileSize, y * tileSize)
+    const sprite = level[i]
+    if (i !== 3) {
+      drawSprite(level[i], x * tileSize, y * tileSize)
+    }
   }
-  const roomName = roomNames[location.toString()] || location.toString()
+  const roomData = roomDatas[location.toString()]
   ctx.textAlign = "center"
+  const roomName = roomData ? roomData.name : location.toString()
   ctx.fillText(roomName, tileSize * (levelWidth / 2) * scale, 24 + 0 * tileSize * scale)
+}
+
+function drawNpcs() {
+  for(const npc of npcs) {
+    let spriteIndex = 5
+    if (npc.active) {
+      spriteIndex = (frame > 40) ? 4: 3
+    }
+    drawSprite(spriteIndex, npc.pos.x, npc.pos.y)
+    if (npc.active) {
+      ctx.textAlign = "center"
+      const x = Math.floor(npc.pos.x * scale)
+      const y = Math.floor(npc.pos.y * scale)
+      ctx.fillText(npc.text, x, y - 8 * scale, 300)
+    }
+  }
 }
 
 const keys = {up: false, left: false, right: false}
@@ -88,7 +131,6 @@ window.addEventListener("keyup", function (e) {
 
 function drawSprite(index, x, y) {
   if (index == 0) return //empty space hack
-  if (index == 3 && frame > 40) index++ //animated bird hack
   if (index == 6 && frame > 30) index++ //animated flower hack
   const flipped = (index == 2 && player.facingLeft)
   if (index == 2 && Math.abs(player.vel.x) > maxXVel * 0.99) index += 16 //animated snail hack
@@ -108,12 +150,6 @@ function drawSprite(index, x, y) {
 	  width*scale, height*scale)
   if (flipped) ctx.scale(-1, 1)
   ctx.translate(-x, -y)
-  
-  if (index === 3 || index === 4) {
-    //more animated bird hacks
-    ctx.textAlign = "center"
-    ctx.fillText("Hello!", x, y - 8 * scale, 300)
-  }
 }
 
 const player = {
@@ -134,7 +170,7 @@ function isGrounded(ent) {
   return !!getCollidingTiles({x: ent.pos.x, y:ent.pos.y + 0.1})
 }
 
-function tick() {
+function updatePlayer() {
   frame = (frame + 1) % 60
   if (keys.right && player.vel.x < maxXVel) player.vel.x += xAccel
   else if (keys.left && player.vel.x > -maxXVel) player.vel.x -= xAccel
@@ -195,6 +231,23 @@ function tick() {
     player.pos.y -= levelHeight * tileSize
     changeRoom(location)
   }
+}
+
+function updateNpcs() {
+  for(let npc of npcs) {
+    if (close(npc.pos, player.pos)) {
+      npc.active = true
+    }
+  }
+}
+
+function close(pos1, pos2) {
+  return Math.abs(pos1.x - pos2.x) < tileSize && Math.abs(pos1.y - pos2.y) < tileSize
+}
+
+function tick() {
+  updatePlayer()
+  updateNpcs()
   draw()
   // ctx.fillText(`Player X pos: ${player.pos.x}`, 50, 50)
   // ctx.fillText(`Player Y pos: ${player.pos.y}`, 50, 70)
@@ -232,6 +285,7 @@ function getCollidingTiles(pos) {
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   drawLevel()
+  drawNpcs()
   drawSprite(2, player.pos.x, player.pos.y)
   requestAnimationFrame(tick)
 }

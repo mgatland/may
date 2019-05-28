@@ -2,6 +2,7 @@
 
 import {editor} from "/editor.js"
 
+let cheatMode = false
 const scale = 4
 const levelWidth = 35
 const levelHeight = 20
@@ -110,7 +111,7 @@ function drawNpcs() {
   }
 }
 
-const keys = {up: false, left: false, right: false}
+const keys = {up: false, left: false, right: false, down: false}
 
 function switchKey(key, state) {
 	switch (key) {
@@ -126,7 +127,16 @@ function switchKey(key, state) {
     case 'w':
       keys.up = state
       break
-	}
+    case 'ArrowDown':
+    case 's':
+      keys.down = state
+      break
+  }
+  
+  //hack for cheatmode
+  if (state === false && key === 'End') {
+    cheatMode = !cheatMode
+  }
 }
 
 window.addEventListener("keydown", function (e) {
@@ -185,44 +195,53 @@ function isGrounded(ent) {
   return !!getCollidingTiles({x: ent.pos.x, y:ent.pos.y + 0.1})
 }
 
+
 function updatePlayer() {
-  frame = (frame + 1) % 60
-  if (keys.right && player.vel.x < maxXVel) player.vel.x += xAccel
-  else if (keys.left && player.vel.x > -maxXVel) player.vel.x -= xAccel
-  else if (!keys.left && player.vel.x < 0 && isGrounded(player)) player.vel.x += Math.min(-player.vel.x, xDecel)
-  else if (!keys.right && player.vel.x > 0 && isGrounded(player)) player.vel.x -= Math.min(player.vel.x, xDecel)
 
-  if (keys.left) player.facingLeft = true
-  if (keys.right) player.facingLeft = false
-
-  // check collisions x
-  player.pos.x += player.vel.x
-
-  const collidingTile = getCollidingTiles(player.pos)
-  if (collidingTile !== null) {
-    const clearTileIndex = getIndexFromPixels(collidingTile.x, collidingTile.y) +
-      (player.vel.x < 0 ? 1 : -1) // move player one tile left or right
-    const { x : clearX } = getPixelsFromIndex(clearTileIndex)
-    player.pos.x = clearX + tileSize / 2
-    player.vel.x = 0
-  }
-
-  if (keys.up && isGrounded(player)) {
-    player.vel.y -= 2
-    player.vel.y -= Math.abs(player.vel.x / 4)
-  }
-  player.vel.y += 0.1
-
-  // check collisions y
-  player.pos.y += player.vel.y
-
-  const collidingTileY = getCollidingTiles(player.pos)
-  if (collidingTileY !== null) {
-    const clearTileIndex = getIndexFromPixels(collidingTileY.x, collidingTileY.y) +
-      (player.vel.y < 0 ? levelWidth : -levelWidth) // move player one tile up or down
-    const { y : clearY } = getPixelsFromIndex(clearTileIndex)
-    player.pos.y = clearY + tileSize / 2
-    player.vel.y = 0
+  if (cheatMode) {
+    const cheatSpeed = 5
+    if (keys.left) player.pos.x -= cheatSpeed    
+    if (keys.right) player.pos.x += cheatSpeed   
+    if (keys.up) player.pos.y -= cheatSpeed    
+    if (keys.down) player.pos.y += cheatSpeed     
+  } else {
+    if (keys.right && player.vel.x < maxXVel) player.vel.x += xAccel
+    else if (keys.left && player.vel.x > -maxXVel) player.vel.x -= xAccel
+    else if (!keys.left && player.vel.x < 0 && isGrounded(player)) player.vel.x += Math.min(-player.vel.x, xDecel)
+    else if (!keys.right && player.vel.x > 0 && isGrounded(player)) player.vel.x -= Math.min(player.vel.x, xDecel)
+  
+    if (keys.left) player.facingLeft = true
+    if (keys.right) player.facingLeft = false
+  
+    // check collisions x
+    player.pos.x += player.vel.x
+  
+    const collidingTile = getCollidingTiles(player.pos)
+    if (collidingTile !== null) {
+      const clearTileIndex = getIndexFromPixels(collidingTile.x, collidingTile.y) +
+        (player.vel.x < 0 ? 1 : -1) // move player one tile left or right
+      const { x : clearX } = getPixelsFromIndex(clearTileIndex)
+      player.pos.x = clearX + tileSize / 2
+      player.vel.x = 0
+    }
+  
+    if (keys.up && isGrounded(player)) {
+      player.vel.y -= 2
+      player.vel.y -= Math.abs(player.vel.x / 4)
+    }
+    player.vel.y += 0.1
+  
+    // check collisions y
+    player.pos.y += player.vel.y
+  
+    const collidingTileY = getCollidingTiles(player.pos)
+    if (collidingTileY !== null) {
+      const clearTileIndex = getIndexFromPixels(collidingTileY.x, collidingTileY.y) +
+        (player.vel.y < 0 ? levelWidth : -levelWidth) // move player one tile up or down
+      const { y : clearY } = getPixelsFromIndex(clearTileIndex)
+      player.pos.y = clearY + tileSize / 2
+      player.vel.y = 0
+    }
   }
 
   //Room transitions
@@ -267,6 +286,7 @@ function close(pos1, pos2) {
 }
 
 function tick() {
+  frame = (frame + 1) % 60
   updatePlayer()
   updateNpcs()
   draw()

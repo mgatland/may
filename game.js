@@ -1,36 +1,18 @@
 "use strict"
 
-import {startEditor} from "/editor.js"
+import {editor} from "/editor.js"
 
 const scale = 4
 const levelWidth = 35
 const tileSize = 8
 let frame = 0
 const level = 
-//234567890123456789012345678901234<-- end
-`
-X       X       X       X         X
-X       X       X       X         X
-X       X       X       X         X
-XXXXXXXXX       X       X         X
-X       X       X       X         X
-X       X       X       X         X
-X       X       X       X         X
-X       X       X       X         X
-X       X       X       X         X
-X       X                         X
-X                                 X
-X                                 X
-X                           t     X
-X                       XXXXXXXXX X
-X                  t v  X       X X
-XXXXXXXXX       XXXXXXXXX       X X
-X       X       X       X       X X
-X       X       X       X       X X
-X       X       X       X       X X
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-`.replace(/X/g, "1").replace(/ /g, "0")
-.replace(/\n/g, "").replace(/t/g, "3").replace(/v/g, "6").split("").map(x => parseInt(x))
+editor.rleDecode([1,1,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,
+  0,9,1,10,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,
+  1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,25,1,2,0,7,
+  1,1,0,25,1,2,0,33,1,2,0,27,3,1,0,5,1,2,0,23,1,9,0,1,1,2,0,18,3,1,0,1,6,1,0,2,1,1,0,7,1,1,0,1,1,10,0,7,1,9,
+  0,7,1,1,0,1,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,7,1,1,0,1,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,7,1,1,0,1,1,2,0,7,1,1,0,7,
+  1,1,0,7,1,1,0,7,1,1,0,1,1,36])
 
 
 const canvas = document.querySelector("canvas")
@@ -42,7 +24,7 @@ spriteImage.addEventListener('load', function() {
   start()
 }, false)
 
-startEditor(canvas, scale, level, levelWidth, tileSize)
+editor.startEditor(canvas, scale, level, levelWidth, tileSize)
 
 function drawLevel() {
   for (let i = 0; i < level.length; i++) {

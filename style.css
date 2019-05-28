@@ -20,7 +20,7 @@ body {
 
 .gameCanvas {
 	display:block;
-	background-color: #222;
+	background-color: #ccc;
 	height: 100%;
 	margin: auto;
 	image-rendering: crisp-edges;

@@ -12,19 +12,22 @@ const roomSrc =
 {"0x0":[1,1,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,10,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,25,1,2,0,7,1,1,0,25,1,2,0,33,1,2,0,27,3,1,0,5,1,2,0,2,1,6,0,1,1,1,0,13,1,9,0,1,1,2,0,9,1,2,0,7,3,1,0,1,6,1,0,2,1,1,0,7,1,1,0,1,1,10,0,2,1,3,0,2,1,9,0,7,1,1,0,1,1,2,0,7,1,6,0,2,1,1,0,7,1,1,0,7,1,1,0,1,1,2,0,6,1,8,0,1,1,1,0,7,1,1,0,7,1,1,0,1,1,2,0,5,1,12,0,6,1,1,0,7,1,1,0,1,1,36],"1x0":[1,1,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,10,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,25,1,2,0,7,1,1,0,25,1,2,0,33,1,2,0,27,3,1,0,5,1,2,0,23,1,9,0,1,1,2,0,18,3,1,0,1,6,1,0,2,1,1,0,7,1,1,0,1,1,10,0,7,1,9,0,7,1,1,0,1,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,7,1,1,0,1,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,7,1,1,0,1,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,7,1,1,0,1,1,36],"0x1":[0,426,1,1,0,8,1,1,0,25,1,1,0,8,1,1,0,25,1,1,0,8,1,1,0,25,1,10,0,159]}
 const rooms = Object.assign({}, ...Object.keys(roomSrc).map(key => ({[key]: editor.rleDecode(roomSrc[key])})));
 
+const roomNames = {
+  "0x0": "Skyscraper"
+}
 const location = {x: 0, y: 0, toString: function () {return this.x + "x" + this.y}}
 
-function getRoom(location) {
-  const room = rooms[location.toString()]
-  if (room != null) return room
-  const newRoom = editor.rleDecode([0, levelWidth * levelHeight])
-  rooms[location] = newRoom
-  return newRoom
+function changeRoom(location) {
+  function getRoom(location) {
+    const room = rooms[location.toString()]
+    if (room != null) return room
+    const newRoom = editor.rleDecode([0, levelWidth * levelHeight])
+    rooms[location] = newRoom
+    return newRoom
+  }
+  level = getRoom(location)
+  editor.setLevel(level)
 }
-
-let level = getRoom(location)
-
-
 
 const canvas = document.querySelector("canvas")
 const ctx = canvas.getContext("2d")
@@ -36,7 +39,9 @@ spriteImage.addEventListener('load', function() {
 }, false)
 
 editor.startEditor(canvas, scale, rooms, levelWidth, tileSize)
-editor.setLevel(level)
+
+let level = null
+changeRoom(location)
 
 function drawLevel() {
   for (let i = 0; i < level.length; i++) {
@@ -139,7 +144,7 @@ function tick() {
   }
 
   if (keys.up && isGrounded(player)) {
-    player.vel.y -= 1.8
+    player.vel.y -= 2
     player.vel.y -= Math.abs(player.vel.x / 4)
   }
   player.vel.y += 0.1
@@ -160,26 +165,22 @@ function tick() {
   if (player.pos.x < 0) {
     location.x--
     player.pos.x += levelWidth * tileSize
-    level = getRoom(location)
-    editor.setLevel(level)
+    changeRoom(location)
   }
   if (player.pos.x > levelWidth * tileSize) {
     location.x++
     player.pos.x -= levelWidth * tileSize
-    level = getRoom(location)
-    editor.setLevel(level)
+    changeRoom(location)
   }
   if (player.pos.y < 0) {
     location.y--
     player.pos.y += levelHeight * tileSize
-    level = getRoom(location)
-    editor.setLevel(level)
+    changeRoom(location)
   }
   if (player.pos.y > levelHeight * tileSize) {
     location.y++
     player.pos.y -= levelHeight * tileSize
-    level = getRoom(location)
-    editor.setLevel(level)
+    changeRoom(location)
   }
   draw()
   // ctx.fillText(`Player X pos: ${player.pos.x}`, 50, 50)
@@ -187,6 +188,7 @@ function tick() {
 }
 
 function getIndexFromPixels(x, y) {
+  if (x < 0 || y < 0 || x >= levelWidth * tileSize || y >= levelHeight * tileSize) return -1
   return Math.floor((y / tileSize)) * levelWidth + Math.floor((x / tileSize))
 }
 

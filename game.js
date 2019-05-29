@@ -2,7 +2,6 @@
 
 import {editor} from "/editor.js"
 
-let cheatMode = false
 const scale = 4
 const levelWidth = 35
 const levelHeight = 20
@@ -35,20 +34,22 @@ const roomDatas = {
 
 //Towerland
 
-const location = {x: 0, y: 0, toString: function () {return this.x + "x" + this.y}}
-
 const npcPlaceholder = 13
 let npcs = []
 
 const undefinedNpc = {active: true, text: "I'm undefined"}
 
+function locationKey(location) {
+  return location.x + "x" + location.y
+}
+
 function getRoomData(location) {
-  return roomDatas[location.toString()]
+  return roomDatas[locationKey(location)]
 }
 
 function changeRoom(location) {
   function getRoom(location) {
-    const room = rooms[location.toString()]
+    const room = rooms[locationKey(location)]
     if (room != null) return room
     const newRoom = editor.rleDecode([0, levelWidth * levelHeight])
     rooms[location] = newRoom
@@ -93,7 +94,22 @@ spriteImage.addEventListener('load', function() {
 editor.startEditor(canvas, scale, rooms, levelWidth, tileSize)
 
 let level = null
-changeRoom(location)
+
+const player = {
+  pos: {x: 16, y: 44},
+  vel: {x: 0, y: 0},
+  location: {x: 0, y: 0},
+  facingLeft: false,
+  hasQuest: false,
+  letters: 100, //fixme: calculate
+}
+
+const savedPlayer = localStorage.getItem("github.com/mgatland/may/player")
+if (savedPlayer) {
+  Object.assign(player, JSON.parse(savedPlayer))
+}
+
+changeRoom(player.location)
 
 function drawLevel() {
   for (let i = 0; i < level.length; i++) {
@@ -104,9 +120,9 @@ function drawLevel() {
       drawSprite(level[i], x * tileSize, y * tileSize)
     }
   }
-  const roomData = getRoomData(location)
+  const roomData = getRoomData(player.location)
   ctx.textAlign = "center"
-  const roomName = roomData ? roomData.name : location.toString()
+  const roomName = roomData ? roomData.name : locationKey(player.location)
   ctx.fillText(roomName, tileSize * (levelWidth / 2) * scale, 24 + 0 * tileSize * scale)
 
   if (player.hasQuest) {
@@ -158,7 +174,7 @@ function switchKey(key, state) {
   
   //hack for cheatmode
   if (state === false && key === 'End') {
-    cheatMode = !cheatMode
+    player.cheatMode = !player.cheatMode
   }
 }
 
@@ -193,19 +209,6 @@ function drawSprite(index, x, y) {
   ctx.translate(-x, -y)
 }
 
-//full game state to save:
-//player object
-//npc active state
-//location (screen)
-
-const player = {
-  pos: {x: 16, y: 44},
-  vel: {x: 0, y: 0},
-  facingLeft: false,
-  hasQuest: false,
-  letters: 100, //fixme: calculate
-}
-
 function start() {
   tick()
 }
@@ -221,7 +224,7 @@ function isGrounded(ent) {
 
 function updatePlayer() {
 
-  if (cheatMode) {
+  if (player.cheatMode) {
     const cheatSpeed = 5
     if (keys.left) player.pos.x -= cheatSpeed    
     if (keys.right) player.pos.x += cheatSpeed   
@@ -268,6 +271,7 @@ function updatePlayer() {
   }
 
   //Room transitions
+  const location = player.location
   if (player.pos.x < 0) {
     location.x--
     player.pos.x += levelWidth * tileSize
@@ -310,6 +314,9 @@ function close(pos1, pos2) {
 
 function tick() {
   frame = (frame + 1) % 60
+  if (frame === 0) {
+    localStorage.setItem("github.com/mgatland/may/player", JSON.stringify(player))
+  }
   updatePlayer()
   updateNpcs()
   draw()

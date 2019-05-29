@@ -356,8 +356,12 @@ function updatePlayer () {
       player.vel.x = 0
     }
 
-    if (keys.up && isGrounded(player)) {
-      player.vel.y -= 2
+    // You can jump if
+    // 1. you are falling
+    // 2. you have ground under your feet
+    // This prevents a case where you step over the edge of a platform and immediately can jump again
+    if (keys.up && isGrounded(player) && player.vel.y >= 0) {
+      player.vel.y = -2 // If we ever add slopes, we'd want to preserve vertical speed here sometimes.
       player.vel.y -= Math.abs(player.vel.x / 4)
     }
     player.vel.y += 0.1

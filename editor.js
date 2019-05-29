@@ -1,6 +1,7 @@
-const npcPlaceholder = 13 //duplicated
+/* eslint-disable no-console */
+const npcPlaceholder = 13 // duplicated
 
-function rleEncode(level) {
+function rleEncode (level) {
   const out = []
   let prev = null
   let amount = 0
@@ -21,7 +22,7 @@ function rleEncode(level) {
   return out
 }
 
-function rleDecode(levelData) {
+function rleDecode (levelData) {
   const pairs = levelData.reduce((result, value, index, array) => {
     if (index % 2 === 0) {
       result.push(array.slice(index, index + 2))
@@ -37,36 +38,34 @@ function rleDecode(levelData) {
   return level
 }
 
-function saveLevelString(rooms) {
+function saveLevelString (rooms) {
   const rleRooms = {}
   for (const key in rooms) {
     rleRooms[key] = rleEncode(rooms[key])
   }
-  const dataEl = document.querySelector(".levelData")
+  const dataEl = document.querySelector('.levelData')
   const dataAsString = JSON.stringify(rleRooms)
   dataEl.innerText = dataAsString
-  localStorage.setItem("github.com/mgatland/may/map", dataAsString) //key is duplicated
-  console.log(level.length)
+  localStorage.setItem('github.com/mgatland/may/map', dataAsString) // key is duplicated
 }
 
 let level = null
 let brush = 1
 
 export const editor = {
-  setLevel: function setLevel(newLevel) {
+  setLevel: function setLevel (newLevel) {
     level = newLevel
   },
   startEditor: function startEditor (canvas, scale, rooms, levelWidth, tileSize) {
-
-    function getMouseXYFromEvent(e) {
+    function getMouseXYFromEvent (e) {
       const x = event.offsetX * canvas.width / canvas.offsetWidth / scale
       const y = event.offsetY * canvas.height / canvas.offsetHeight / scale
-      return {x, y}
+      return { x, y }
     }
 
-    function mouseMove(e) {
+    function mouseMove (e) {
       const pos = getMouseXYFromEvent(e)
-      const tile = {x: Math.floor(pos.x / 8), y: Math.floor(pos.y / 8)}
+      const tile = { x: Math.floor(pos.x / 8), y: Math.floor(pos.y / 8) }
       const i = tile.x + tile.y * levelWidth
       if (e.buttons === 1) {
         level[i] = brush
@@ -78,30 +77,29 @@ export const editor = {
       }
     }
 
-    canvas.addEventListener("mousemove", mouseMove)
-    canvas.addEventListener("mousedown", mouseMove)
-    canvas.addEventListener("contextmenu", function (e) {
+    canvas.addEventListener('mousemove', mouseMove)
+    canvas.addEventListener('mousedown', mouseMove)
+    canvas.addEventListener('contextmenu', function (e) {
       e.preventDefault()
     })
 
     const brushes = {
-      "1": 1,
-      "2": 9,
-      "3": 10,
-      "4": 11,
-      "5": 12,
-      "6": 6,
-      "7": 7,
-      "8": 8,
-      "9": 2,
-      "0": npcPlaceholder,
+      '1': 1,
+      '2': 9,
+      '3': 10,
+      '4': 11,
+      '5': 12,
+      '6': 7, // flower
+      '7': 14, // water
+      '8': 8, // ladder
+      '9': 2, // replace
+      '0': npcPlaceholder
     }
 
-    window.addEventListener("keydown", function (e) {
+    window.addEventListener('keydown', function (e) {
       brush = brushes[e.key] || brush
     })
   },
   rleDecode,
-  rleEncode,
+  rleEncode
 }
-

@@ -1,6 +1,7 @@
-"use strict"
+/* eslint-disable no-console */
+'use strict'
 
-import {editor} from "/editor.js"
+import { editor } from '/editor.js'
 
 const scale = 4
 const levelWidth = 35
@@ -8,86 +9,135 @@ const levelHeight = 20
 const tileSize = 8
 let frame = 0
 
-let savedMap = localStorage.getItem("github.com/mgatland/may/map") //duplicated
+let savedMap = localStorage.getItem('github.com/mgatland/may/map') // duplicated
 let roomSrc = savedMap ? JSON.parse(savedMap) : {}
 if (savedMap) {
-  console.log("Loading map from local storage. This is only for development use.")
+  console.log('Loading map from local storage. This is only for development use.')
 } else {
   roomSrc =
-  {"0x0":[0,14,11,7,0,3,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,16,11,7,0,3,1,1,0,7,1,1,0,26,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,2,1,9,0,15,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,2,1,1,0,7,1,1,0,4,1,9,0,2,1,1,0,7,1,1,0,2,1,1,0,7,1,1,11,4,1,1,9,7,1,1,11,2,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,2,1,6,0,2,1,1,0,4,1,1,9,1,0,2,9,1,12,1,9,2,1,1,0,2,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,2,1,1,0,7,1,1,0,4,1,1,9,1,0,1,9,1,0,1,9,3,1,1,0,2,1,1,0,7,1,1,0,2,1,1,0,7,1,1,0,4,1,1,9,1,0,3,9,3,1,1,0,2,1,9,0,2,1,1,0,2,1,6,0,4,1,1,9,7,1,1,0,13,1,1,0,12,1,9,0,13,1,1,0,34,1,9,0,19,13,1,0,3,1,4,0,7,1,1,0,15,1,9,0,2,1,1,0,7,1,9,0,7,1,1,0,7,1,1,0,2,1,6,0,2,1,1,9,7,1,9,0,1,1,2,0,1,1,2,0,1,1,1,0,1,1,2,0,7,1,1,9,1,10,2,9,1,10,2,9,1,1,1,0,7,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,1,1,2,0,7,1,1,9,1,10,2,9,1,10,2,9,1,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,7,1,1,0,2,1,1,0,2,1,6,9,7,1,1,0,1,1,2,0,1,1,2,0,1,1,1,0,7,1,1,0,2,1,1,0,7,1,1,9,7,1,1,0,7,1,11,9,1],"1x0":[1,1,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,10,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,9,1,2,0,7,1,1,0,25,1,2,0,7,1,1,0,25,1,2,0,33,1,2,0,27,3,1,0,5,1,2,0,23,1,9,0,1,1,2,0,18,3,1,0,1,6,1,0,2,1,1,0,7,1,1,0,1,1,10,0,7,1,9,0,7,1,1,0,1,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,7,1,1,0,1,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,7,1,1,0,1,1,2,0,7,1,1,0,7,1,1,0,7,1,1,0,7,1,1,0,1,1,36],"0x1":[0,426,1,1,0,8,1,1,0,25,1,1,0,8,1,1,0,25,1,1,0,8,1,1,0,25,1,10,0,159]}
-
+{ '0x0': [0, 14, 11, 7, 0, 3, 1, 1, 0, 1, 1, 2, 0, 1, 1, 2, 0, 1, 1, 1, 0, 16, 11, 7, 0, 3, 1, 1, 0, 7, 1, 1, 0, 26, 1, 1, 0, 1, 1, 2, 0, 1, 1, 2, 0, 1, 1, 1, 0, 2, 1, 9, 0, 15, 1, 1, 0, 1, 1, 2, 0, 1, 1, 2, 0, 1, 1, 1, 0, 2, 1, 1, 0, 7, 1, 1, 0, 4, 1, 9, 0, 2, 1, 1, 0, 7, 1, 1, 0, 2, 1, 1, 0, 7, 1, 1, 11, 4, 1, 1, 9, 7, 1, 1, 11, 2, 1, 1, 0, 1, 1, 2, 0, 1, 1, 2, 0, 1, 1, 1, 0, 2, 1, 6, 0, 2, 1, 1, 0, 4, 1, 1, 9, 1, 0, 2, 9, 1, 12, 1, 9, 2, 1, 1, 0, 2, 1, 1, 0, 1, 1, 2, 0, 1, 1, 2, 0, 1, 1, 1, 0, 2, 1, 1, 0, 7, 1, 1, 0, 4, 1, 1, 9, 1, 0, 1, 9, 1, 0, 1, 9, 3, 1, 1, 0, 2, 1, 1, 0, 7, 1, 1, 0, 2, 1, 1, 0, 7, 1, 1, 0, 4, 1, 1, 9, 1, 0, 3, 9, 3, 1, 1, 0, 2, 1, 9, 0, 2, 1, 1, 0, 2, 1, 6, 0, 4, 1, 1, 9, 7, 1, 1, 0, 13, 1, 1, 0, 12, 1, 9, 0, 13, 1, 1, 0, 34, 1, 9, 0, 19, 13, 1, 0, 3, 1, 4, 0, 7, 1, 1, 0, 15, 1, 9, 0, 2, 1, 1, 0, 7, 1, 9, 0, 7, 1, 1, 0, 7, 1, 1, 0, 2, 1, 6, 0, 2, 1, 1, 9, 7, 1, 9, 0, 1, 1, 2, 0, 1, 1, 2, 0, 1, 1, 1, 0, 1, 1, 2, 0, 7, 1, 1, 9, 1, 10, 2, 9, 1, 10, 2, 9, 1, 1, 1, 0, 7, 1, 1, 0, 1, 1, 2, 0, 1, 1, 2, 0, 1, 1, 1, 0, 1, 1, 2, 0, 7, 1, 1, 9, 1, 10, 2, 9, 1, 10, 2, 9, 1, 1, 1, 0, 1, 1, 2, 0, 1, 1, 2, 0, 1, 1, 1, 0, 7, 1, 1, 0, 2, 1, 1, 0, 2, 1, 6, 9, 7, 1, 1, 0, 1, 1, 2, 0, 1, 1, 2, 0, 1, 1, 1, 0, 7, 1, 1, 0, 2, 1, 1, 0, 7, 1, 1, 9, 7, 1, 1, 0, 7, 1, 11, 9, 1], '1x0': [0, 15, 11, 5, 0, 30, 11, 5, 0, 365, 1, 4, 0, 34, 1, 1, 0, 20, 1, 11, 0, 3, 1, 1, 0, 16, 13, 1, 0, 3, 1, 1, 9, 9, 1, 2, 0, 2, 1, 6, 0, 7, 1, 9, 9, 9, 1, 2, 0, 2, 1, 1, 9, 4, 1, 1, 0, 3, 13, 1, 0, 3, 1, 1, 9, 7, 1, 1, 9, 9, 1, 1, 0, 3, 1, 1, 9, 4, 1, 1, 0, 2, 1, 3, 0, 2, 1, 1, 9, 17, 1, 1, 0, 3, 1, 1, 9, 4, 1, 1, 0, 2, 1, 3, 0, 2, 1, 1, 9, 7, 1, 1, 9, 9, 1, 1, 0, 3, 1, 1, 9, 4, 1, 9, 9, 7, 1, 11], '0x1': [0, 426, 1, 1, 0, 8, 1, 1, 0, 25, 1, 1, 0, 8, 1, 1, 0, 25, 1, 1, 0, 8, 1, 1, 0, 25, 1, 10, 0, 159], '[object Object]': [0, 371, 1, 1, 0, 328], '2x0': [0, 142, 1, 1, 0, 16, 13, 1, 0, 9, 13, 1, 0, 7, 1, 1, 0, 3, 1, 7, 0, 3, 1, 6, 0, 5, 1, 6, 0, 4, 1, 2, 0, 2, 1, 1, 0, 5, 1, 1, 0, 3, 1, 1, 0, 4, 1, 1, 0, 5, 1, 1, 0, 4, 1, 1, 0, 4, 1, 1, 0, 3, 1, 1, 0, 1, 1, 3, 0, 1, 1, 1, 0, 3, 1, 1, 0, 4, 1, 1, 0, 5, 1, 1, 0, 4, 1, 1, 0, 4, 1, 1, 0, 2, 1, 2, 0, 1, 1, 3, 0, 1, 1, 1, 0, 3, 1, 1, 0, 4, 1, 1, 0, 5, 1, 1, 0, 4, 1, 1, 0, 4, 1, 1, 0, 3, 1, 1, 0, 5, 1, 1, 0, 3, 1, 6, 0, 5, 1, 6, 0, 4, 1, 2, 0, 2, 1, 1, 0, 1, 1, 3, 0, 1, 1, 1, 0, 28, 1, 1, 0, 1, 1, 3, 0, 1, 1, 1, 0, 27, 1, 2, 0, 5, 1, 1, 0, 22, 1, 7, 0, 1, 1, 3, 0, 1, 1, 1, 0, 28, 1, 1, 0, 1, 1, 3, 0, 1, 1, 1, 0, 28, 1, 1, 0, 5, 1, 1, 0, 28, 1, 1, 0, 1, 1, 3, 0, 1, 1, 1, 0, 28, 1, 1, 0, 1, 1, 3, 0, 1, 1, 1, 0, 28, 1, 1, 0, 5, 1, 1, 0, 2, 13, 1, 0, 25, 1, 1, 0, 1, 1, 3, 0, 1, 1, 23], '2x-1': [0, 700], '3x0': [0, 178, 1, 6, 0, 29, 1, 1, 0, 4, 1, 1, 0, 2, 1, 1, 0, 7, 13, 1, 0, 18, 1, 1, 0, 4, 1, 1, 0, 2, 1, 2, 0, 4, 1, 4, 0, 2, 1, 12, 0, 3, 1, 1, 0, 4, 1, 1, 0, 2, 1, 3, 0, 5, 1, 2, 0, 3, 1, 1, 0, 13, 1, 1, 0, 4, 1, 1, 0, 2, 1, 4, 0, 5, 1, 2, 0, 2, 1, 1, 0, 13, 1, 1, 0, 4, 1, 1, 0, 2, 1, 5, 0, 4, 1, 1, 0, 3, 1, 1, 0, 13, 1, 6, 0, 2, 1, 6, 0, 3, 1, 1, 0, 2, 1, 2, 0, 30, 1, 1, 0, 3, 1, 1, 0, 29, 1, 3, 0, 2, 1, 1, 0, 29, 1, 2, 0, 3, 1, 1, 0, 24, 13, 1, 0, 4, 1, 2, 0, 2, 1, 2, 0, 21, 1, 10, 0, 3, 1, 1, 0, 21, 1, 1, 0, 8, 1, 2, 0, 2, 1, 1, 0, 15, 13, 1, 0, 5, 1, 1, 0, 8, 1, 1, 0, 3, 1, 1, 0, 10, 1, 21, 0, 2, 1, 2, 0, 10], '3x1': [0, 20, 1, 1, 0, 2, 1, 9, 0, 3, 1, 22, 0, 9, 1, 1, 0, 24, 1, 2, 0, 8, 1, 1, 0, 24, 1, 2, 0, 4, 13, 1, 0, 3, 1, 1, 0, 24, 1, 11, 0, 528], '3x2': [0, 700], '3x3': [0, 700], '3x4': [0, 700], '3x5': [0, 700], '4x0': [0, 7, 1, 8, 0, 5, 1, 8, 0, 13, 1, 1, 0, 21, 1, 1, 0, 11, 1, 1, 0, 23, 1, 1, 0, 9, 1, 1, 0, 25, 1, 1, 0, 7, 1, 1, 0, 27, 1, 1, 0, 73, 1, 5, 0, 25, 1, 5, 0, 4, 1, 1, 0, 5, 13, 1, 0, 6, 13, 1, 0, 6, 13, 1, 0, 5, 1, 1, 0, 8, 1, 27, 0, 354], '4x-1': [0, 360, 1, 15, 0, 19, 1, 1, 0, 7, 1, 1, 0, 7, 1, 1, 0, 17, 1, 1, 0, 8, 1, 1, 0, 8, 1, 1, 0, 15, 1, 1, 0, 9, 1, 1, 0, 9, 1, 1, 0, 14, 1, 1, 0, 9, 1, 1, 0, 9, 1, 1, 0, 14, 1, 1, 0, 19, 1, 1, 0, 59, 1, 1, 0, 29, 13, 1, 0, 4, 1, 1, 0, 6, 13, 1, 0, 17, 1, 21, 0, 7], '3x-1': [0, 700], '5x-1': [0, 700], '5x0': [0, 245, 1, 2, 0, 35, 1, 1, 0, 35, 1, 1, 0, 9, 10, 1, 0, 5, 10, 1, 0, 5, 10, 1, 0, 12, 1, 1, 0, 9, 10, 1, 0, 5, 10, 1, 0, 5, 10, 1, 0, 10, 12, 1, 0, 2, 1, 1, 0, 7, 10, 3, 0, 3, 10, 3, 0, 3, 10, 3, 0, 13, 1, 2, 0, 5, 10, 3, 0, 3, 10, 3, 0, 3, 10, 3, 0, 8, 12, 1, 0, 6, 1, 1, 0, 3, 10, 5, 0, 1, 10, 5, 0, 1, 10, 5, 0, 15, 1, 1, 0, 4, 10, 1, 0, 5, 10, 1, 0, 5, 10, 1, 0, 12, 12, 1, 0, 4, 1, 1, 0, 4, 10, 1, 0, 5, 10, 1, 0, 5, 10, 1, 0, 5, 13, 1, 0, 10, 12, 1, 0, 1, 1, 26, 0, 1, 12, 1, 0, 2, 12, 1, 0, 8, 12, 1, 0, 42, 12, 1, 0, 4, 12, 1, 0, 15, 12, 1, 0, 10, 12, 1, 0, 12, 12, 1, 0, 3], '5x1': [0, 700], '5x2': [0, 700], '-1x0': [0, 700], '6x0': [0, 265, 10, 3, 0, 31, 10, 5, 0, 31, 10, 3, 0, 33, 10, 1, 0, 34, 10, 1, 0, 34, 10, 1, 0, 21, 1, 3, 0, 8, 1, 5, 0, 18, 1, 1, 0, 3, 1, 1, 0, 7, 1, 1, 0, 4, 1, 1, 0, 16, 1, 1, 0, 1, 12, 1, 0, 3, 1, 1, 14, 5, 1, 1, 0, 2, 12, 1, 0, 3, 1, 2, 0, 8, 1, 6, 0, 6, 1, 1, 0, 4, 1, 1, 0, 9, 1, 8, 0, 7, 12, 1, 0, 3, 12, 1, 1, 1, 0, 4, 1, 1, 0, 1, 12, 1, 0, 4, 12, 1, 0, 5, 12, 1, 0, 5, 12, 1, 0, 11, 1, 1, 0, 2, 1, 1, 0, 15, 12, 1, 0, 8, 12, 1, 0, 4, 12, 1, 0, 2, 1, 2, 0, 4, 12, 1, 0, 5, 12, 1, 0, 8], '7x0': [0, 82, 7, 1, 0, 3, 1, 6, 0, 24, 1, 5, 0, 6, 1, 5, 0, 17, 1, 2, 0, 16, 1, 5, 0, 13, 1, 2, 0, 2, 12, 1, 0, 4, 12, 1, 0, 4, 12, 1, 0, 7, 1, 3, 0, 12, 1, 3, 0, 35, 1, 3, 0, 3, 12, 1, 0, 11, 12, 1, 0, 19, 1, 1, 0, 3, 12, 1, 0, 6, 12, 1, 0, 24, 1, 1, 0, 34, 1, 1, 0, 5, 12, 1, 0, 3, 12, 1, 0, 24, 1, 1, 0, 1, 12, 1, 0, 19, 10, 3, 0, 9, 1, 1, 0, 14, 12, 1, 0, 6, 10, 5, 0, 8, 1, 1, 0, 22, 10, 3, 0, 9, 1, 1, 0, 23, 10, 1, 0, 9, 1, 1, 0, 6, 12, 1, 0, 3, 12, 1, 0, 6, 1, 3, 0, 4, 10, 1, 0, 9, 1, 1, 0, 2, 12, 1, 0, 17, 1, 3, 0, 1, 10, 1, 0, 9, 1, 1, 0, 23, 1, 4, 0, 7, 1, 1, 0, 15, 12, 1, 0, 11, 1, 7, 0, 6, 12, 1, 0, 11], '7x-1': [0, 700], '3x6': [0, 700], '3x7': [0, 700], '3x8': [0, 700], '3x9': [0, 700], '3x10': [0, 700], '3x11': [0, 700], '2x1': [0, 700] }
 }
 
-const rooms = Object.assign({}, ...Object.keys(roomSrc).map(key => ({[key]: editor.rleDecode(roomSrc[key])})));
+const rooms = Object.assign({}, ...Object.keys(roomSrc).map(key => ({ [key]: editor.rleDecode(roomSrc[key]) })))
 
 const roomDatas = {
-  "0x0": {name: "Snailtown", 
-  npcs: [
-    {questGiver: true, text: "Good morning!\nWould you please deliver\nthese invitations?"}
-  ]},
-  "1x0": {name:"Uptown",
-  npcs: [
-    {text: "An invitation?\nThe party is finally happening!"}
-  ]
-},
+  '0x0': { name: 'Snailtown',
+    npcs: [
+      { questGiver: true, text: 'Good morning!\nWould you please deliver\nthese invitations?' }
+    ] },
+  '1x0': { name: 'Downtown',
+    npcs: [
+      { text: 'An invitation?\nThe party is finally happening!' }
+    ]
+  },
+  '2x0': { name: 'Uptown',
+    npcs: [
+
+    ]
+  },
+  '3x0': { name: 'Junction',
+    npcs: [
+
+    ]
+  },
+  '4x0': { name: 'Mansion',
+    npcs: [
+
+    ]
+  },
+  '5x0': { name: 'Woodfield',
+    npcs: [
+
+    ]
+  },
+  '6x0': { name: 'River Crossing',
+    npcs: [
+
+    ]
+  },
+  '7x0': { name: 'Cliff',
+    npcs: [
+
+    ]
+  },
+  '3x-1': { name: 'Spectacular View',
+    npcs: [
+
+    ]
+  },
+  '4x-1': { name: 'Roadview Suites',
+    npcs: [
+
+    ]
+  },
+  '5x-1': { name: 'Breathtaking View',
+    npcs: [
+
+    ]
+  },
+
+  '3x1': { name: 'Arrivals',
+    npcs: [
+
+    ]
+  }
 }
 
-//Towerland
+console.log('NPC count')
+console.log(Object.values(roomDatas).flatMap(r => r.npcs).length)
+
+// Towerland
 
 const npcPlaceholder = 13
 let npcs = []
 
-const undefinedNpc = {active: true, text: "I'm undefined"}
-
-function locationKey(location) {
-  return location.x + "x" + location.y
+function locationKey (location) {
+  return location.x + 'x' + location.y
 }
 
-function getRoomData(location) {
+function getRoomData (location) {
   return roomDatas[locationKey(location)]
 }
 
-function changeRoom(location) {
-  function getRoom(location) {
+function changeRoom (location) {
+  function getRoom (location) {
     const room = rooms[locationKey(location)]
     if (room != null) return room
     const newRoom = editor.rleDecode([0, levelWidth * levelHeight])
-    rooms[location] = newRoom
+    rooms[locationKey(location)] = newRoom
     return newRoom
   }
   level = getRoom(location)
   editor.setLevel(level)
 
-  //get NPCs
-  let roomData = getRoomData(location) || {npcs: []}
+  // get NPCs
+  let roomData = getRoomData(location) || { npcs: [] }
 
   npcs = roomData.npcs
-  npcs.forEach(npc => {npc.active = !!npc.active; npc.pos = npc.pos || {x: 32, y: 32}})
+  npcs.forEach(npc => { npc.active = !!npc.active; npc.pos = npc.pos || { x: 32, y: 32 } })
   let npcNum = 0
   level.forEach((value, i) => {
     if (value === npcPlaceholder) {
       let npc = npcs[npcNum]
-      if (!npc) {
-        npc = undefinedNpc
-        npcs.push(npc)
+      if (npc) {
+        npcNum++
+        npc.pos = getPixelsFromIndex(i)
+        npc.pos.x += tileSize / 2
+        npc.pos.y += tileSize / 2
       }
-      npcNum++
-      npc.pos = getPixelsFromIndex(i)
-      npc.pos.x += tileSize / 2
-      npc.pos.y += tileSize / 2
     }
   })
 }
 
-const canvas = document.querySelector("canvas")
-const ctx = canvas.getContext("2d")
+const canvas = document.querySelector('canvas')
+const ctx = canvas.getContext('2d')
 ctx.imageSmoothingEnabled = false
 ctx.font = "16px 'uni 05_64'"
-ctx.fillStyle = "black"
-ctx.baseLine = "bottom"
+ctx.fillStyle = 'black'
+ctx.baseLine = 'bottom'
 const spriteImage = new Image()
 spriteImage.src = 'sprites.png'
-spriteImage.addEventListener('load', function() {
+spriteImage.addEventListener('load', function () {
   start()
 }, false)
 
@@ -96,53 +146,53 @@ editor.startEditor(canvas, scale, rooms, levelWidth, tileSize)
 let level = null
 
 const player = {
-  pos: {x: 16, y: 44},
-  vel: {x: 0, y: 0},
-  location: {x: 0, y: 0},
+  pos: { x: 16, y: 44 },
+  vel: { x: 0, y: 0 },
+  location: { x: 0, y: 0 },
   facingLeft: false,
   hasQuest: false,
-  letters: 100, //fixme: calculate
+  letters: 100 // fixme: calculate
 }
 
-const savedPlayer = localStorage.getItem("github.com/mgatland/may/player")
+const savedPlayer = localStorage.getItem('github.com/mgatland/may/player')
 if (savedPlayer) {
   Object.assign(player, JSON.parse(savedPlayer))
 }
 
 changeRoom(player.location)
 
-function drawLevel() {
+function drawLevel () {
   for (let i = 0; i < level.length; i++) {
     const x = (i % levelWidth) + 0.5
     const y = Math.floor(i / levelWidth) + 0.5
     const sprite = level[i]
     if (i !== 3) {
-      drawSprite(level[i], x * tileSize, y * tileSize)
+      drawSprite(sprite, x * tileSize, y * tileSize)
     }
   }
   const roomData = getRoomData(player.location)
-  ctx.textAlign = "center"
+  ctx.textAlign = 'center'
   const roomName = roomData ? roomData.name : locationKey(player.location)
   ctx.fillText(roomName, tileSize * (levelWidth / 2) * scale, 24 + 0 * tileSize * scale)
 
   if (player.hasQuest) {
-    ctx.textAlign = "left"
-    ctx.fillText(player.letters + " invitations", 38, 24)
+    ctx.textAlign = 'left'
+    ctx.fillText(player.letters + ' invitations', 38, 24)
   }
 }
 
-function drawNpcs() {
-  for(const npc of npcs) {
+function drawNpcs () {
+  for (const npc of npcs) {
     let spriteIndex = 5
     if (npc.active) {
-      spriteIndex = (frame > 40) ? 4: 3
+      spriteIndex = (frame > 40) ? 4 : 3
     }
     drawSprite(spriteIndex, npc.pos.x, npc.pos.y)
     if (npc.active) {
-      ctx.textAlign = "center"
+      ctx.textAlign = 'center'
       const x = Math.floor(npc.pos.x * scale)
       const y = Math.floor(npc.pos.y * scale)
-      const text = npc.text.split("\n").reverse()
+      const text = npc.text.split('\n').reverse()
       for (let i = 0; i < text.length; i++) {
         ctx.fillText(text[i], x, y - 8 * scale - i * 20)
       }
@@ -150,11 +200,11 @@ function drawNpcs() {
   }
 }
 
-const keys = {up: false, left: false, right: false, down: false}
+const keys = { up: false, left: false, right: false, down: false }
 
-function switchKey(key, state) {
-	switch (key) {
-		case 'ArrowLeft':
+function switchKey (key, state) {
+  switch (key) {
+    case 'ArrowLeft':
     case 'a':
       keys.left = state
       break
@@ -171,26 +221,25 @@ function switchKey(key, state) {
       keys.down = state
       break
   }
-  
-  //hack for cheatmode
+
+  // hack for cheatmode
   if (state === false && key === 'End') {
     player.cheatMode = !player.cheatMode
   }
 }
 
-window.addEventListener("keydown", function (e) {
+window.addEventListener('keydown', function (e) {
   switchKey(e.key, true)
 })
 
-window.addEventListener("keyup", function (e) {
+window.addEventListener('keyup', function (e) {
   switchKey(e.key, false)
 })
 
-function drawSprite(index, x, y) {
-  if (index == 0) return //empty space hack
-  if (index == 6 && frame > 30) index++ //animated flower hack
-  const flipped = (index == 2 && player.facingLeft)
-  if (index == 2 && Math.abs(player.vel.x) > maxXVel * 0.99) index += 16 //animated snail hack
+function drawSprite (index, x, y) {
+  if (index === 0) return // empty space hack
+  const flipped = (index === 2 && player.facingLeft)
+  if (index === 2 && Math.abs(player.vel.x) > maxXVel * 0.99) index += 16 // animated snail hack
   const width = 8
   const height = 8
   x = Math.floor(x * scale)
@@ -200,16 +249,16 @@ function drawSprite(index, x, y) {
 
   const sX = (index % 16) * width
   const sY = Math.floor(index / 16) * height
-	ctx.drawImage(spriteImage, 
-		sX, sY, 
-		width, height,
-	  -width/2*scale, -height/2*scale,
-	  width*scale, height*scale)
+  ctx.drawImage(spriteImage,
+    sX, sY,
+    width, height,
+    -width / 2 * scale, -height / 2 * scale,
+    width * scale, height * scale)
   if (flipped) ctx.scale(-1, 1)
   ctx.translate(-x, -y)
 }
 
-function start() {
+function start () {
   tick()
 }
 
@@ -217,60 +266,58 @@ const maxXVel = 2
 const xAccel = 0.1
 const xDecel = 0.05
 
-function isGrounded(ent) {
-  return !!getCollidingTiles({x: ent.pos.x, y:ent.pos.y + 0.1})
+function isGrounded (ent) {
+  return !!getCollidingTiles({ x: ent.pos.x, y: ent.pos.y + 0.1 })
 }
 
-
-function updatePlayer() {
-
+function updatePlayer () {
   if (player.cheatMode) {
     const cheatSpeed = 5
-    if (keys.left) player.pos.x -= cheatSpeed    
-    if (keys.right) player.pos.x += cheatSpeed   
-    if (keys.up) player.pos.y -= cheatSpeed    
-    if (keys.down) player.pos.y += cheatSpeed     
+    if (keys.left) player.pos.x -= cheatSpeed
+    if (keys.right) player.pos.x += cheatSpeed
+    if (keys.up) player.pos.y -= cheatSpeed
+    if (keys.down) player.pos.y += cheatSpeed
   } else {
     if (keys.right && player.vel.x < maxXVel) player.vel.x += xAccel
     else if (keys.left && player.vel.x > -maxXVel) player.vel.x -= xAccel
     else if (!keys.left && player.vel.x < 0 && isGrounded(player)) player.vel.x += Math.min(-player.vel.x, xDecel)
     else if (!keys.right && player.vel.x > 0 && isGrounded(player)) player.vel.x -= Math.min(player.vel.x, xDecel)
-  
+
     if (keys.left) player.facingLeft = true
     if (keys.right) player.facingLeft = false
-  
+
     // check collisions x
     player.pos.x += player.vel.x
-  
+
     const collidingTile = getCollidingTiles(player.pos)
     if (collidingTile !== null) {
       const clearTileIndex = getIndexFromPixels(collidingTile.x, collidingTile.y) +
         (player.vel.x < 0 ? 1 : -1) // move player one tile left or right
-      const { x : clearX } = getPixelsFromIndex(clearTileIndex)
+      const { x: clearX } = getPixelsFromIndex(clearTileIndex)
       player.pos.x = clearX + tileSize / 2
       player.vel.x = 0
     }
-  
+
     if (keys.up && isGrounded(player)) {
       player.vel.y -= 2
       player.vel.y -= Math.abs(player.vel.x / 4)
     }
     player.vel.y += 0.1
-  
+
     // check collisions y
     player.pos.y += player.vel.y
-  
+
     const collidingTileY = getCollidingTiles(player.pos)
     if (collidingTileY !== null) {
       const clearTileIndex = getIndexFromPixels(collidingTileY.x, collidingTileY.y) +
         (player.vel.y < 0 ? levelWidth : -levelWidth) // move player one tile up or down
-      const { y : clearY } = getPixelsFromIndex(clearTileIndex)
+      const { y: clearY } = getPixelsFromIndex(clearTileIndex)
       player.pos.y = clearY + tileSize / 2
       player.vel.y = 0
     }
   }
 
-  //Room transitions
+  // Room transitions
   const location = player.location
   if (player.pos.x < 0) {
     location.x--
@@ -294,8 +341,8 @@ function updatePlayer() {
   }
 }
 
-function updateNpcs() {
-  for(let npc of npcs) {
+function updateNpcs () {
+  for (let npc of npcs) {
     if (!npc.active && (npc.questGiver || player.hasQuest) && close(npc.pos, player.pos)) {
       npc.active = true
       player.letters--
@@ -306,16 +353,16 @@ function updateNpcs() {
   }
 }
 
-function close(pos1, pos2) {
-  //Fragile hack to make quest giver detect you from far away.
+function close (pos1, pos2) {
+  // Fragile hack to make quest giver detect you from far away.
   const dist = player.hasQuest ? tileSize : tileSize * 3
   return Math.abs(pos1.x - pos2.x) < dist && Math.abs(pos1.y - pos2.y) < dist
 }
 
-function tick() {
+function tick () {
   frame = (frame + 1) % 60
   if (frame === 0) {
-    localStorage.setItem("github.com/mgatland/may/player", JSON.stringify(player))
+    localStorage.setItem('github.com/mgatland/may/player', JSON.stringify(player))
   }
   updatePlayer()
   updateNpcs()
@@ -324,36 +371,36 @@ function tick() {
   // ctx.fillText(`Player Y pos: ${player.pos.y}`, 50, 70)
 }
 
-function getIndexFromPixels(x, y) {
+function getIndexFromPixels (x, y) {
   if (x < 0 || y < 0 || x >= levelWidth * tileSize || y >= levelHeight * tileSize) return -1
   return Math.floor((y / tileSize)) * levelWidth + Math.floor((x / tileSize))
 }
 
-function getPixelsFromIndex(i) {
-  return { x: (i % levelWidth) * tileSize, y: Math.floor(i / levelWidth) * tileSize}
+function getPixelsFromIndex (i) {
+  return { x: (i % levelWidth) * tileSize, y: Math.floor(i / levelWidth) * tileSize }
 }
 
-function getCollidingTiles(pos) {
+function getCollidingTiles (pos) {
   const { x, y } = pos
   const halfTile = tileSize / 2
-  const tilesToCheck = [ 
+  const tilesToCheck = [
     [ -halfTile, -halfTile, 'topLeft' ],
-    [ halfTile - .001, -halfTile, 'topRight' ],
-    [ -halfTile, halfTile - .001, 'bottomLeft' ],
-    [ halfTile - .001, halfTile - .001, 'bottomRight' ]
+    [ halfTile - 0.001, -halfTile, 'topRight' ],
+    [ -halfTile, halfTile - 0.001, 'bottomLeft' ],
+    [ halfTile - 0.001, halfTile - 0.001, 'bottomRight' ]
   ]
   for (const [xOffset, yOffset] of tilesToCheck) {
     const tileX = Math.floor(x + xOffset)
     const tileY = Math.floor(y + yOffset)
     const tileIndex = getIndexFromPixels(tileX, tileY)
     if (level[tileIndex] === 1) {
-      return { x: tileX , y: tileY }
+      return { x: tileX, y: tileY }
     }
   }
   return null
 }
 
-function draw() {
+function draw () {
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   drawLevel()
   drawNpcs()

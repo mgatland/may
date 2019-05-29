@@ -8,9 +8,13 @@ todo
 [x] special NPC who gives you the letters
 
 [x] load different NPCs on each level
-[ ] title screen with credits (including the font)
+[ ] more screens, like 10x10
+[ ] sound effects
+[ ] music
 [ ] environmental hazards (implies: losing \ reloading)
     maybe we can have button \ gate \ timing puzzles with no death.
+[ ] title screen with credits (including the font)
+
 
 low priority:
 [ ] special start-screen NPCs you can greet before you get the letters

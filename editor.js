@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 const npcPlaceholder = 13 // duplicated
+const partyPlaceholder = 15 // duplicated
 
 function rleEncode (level) {
   const out = []
@@ -92,7 +93,7 @@ export const editor = {
       '6': 7, // flower
       '7': 14, // water
       '8': 8, // ladder
-      '9': 2, // replace
+      '9': partyPlaceholder,
       '0': npcPlaceholder
     }
 

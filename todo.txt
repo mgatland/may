@@ -8,12 +8,17 @@ todo
 [x] special NPC who gives you the letters
 
 [x] load different NPCs on each level
-[ ] more screens, like 10x10
-[ ] sound effects
+[ ] win condition - party host dialogue changes - message changes to 'go home'
+[ ] fix jumping - something with yval - you can get extra height or less height 
+[ ] title screen with credits (including the font)
 [ ] music
+[ ] more screens, like 10x10
+[ ] title screen dithered snail image https://29a.ch/ditherlicious/
+
+[ ] sound effects
 [ ] environmental hazards (implies: losing \ reloading)
     maybe we can have button \ gate \ timing puzzles with no death.
-[ ] title screen with credits (including the font)
+
 
 
 low priority:
@@ -33,4 +38,4 @@ the way they treat snail matters
 
 (there's no invite for this person)
 
-tell player about running jump
+my first invitation

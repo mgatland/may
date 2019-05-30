@@ -10,8 +10,12 @@ todo
 [x] load different NPCs on each level
 [x] win condition - party host dialogue changes - message changes to 'go home'
 [x] fix jumping - something with yval - you can get extra height or less height 
-[ ] the controls are a bit awkward
+
 [ ] title screen with credits (including the font)
+[ ] fix saving and loading and editing
+
+[ ] the controls are a bit awkward
+
 [ ] music
 [ ] more screens, like 10x10
 [ ] title screen dithered snail image https://29a.ch/ditherlicious/

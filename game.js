@@ -257,7 +257,7 @@ function drawNpcs () {
   }
 }
 
-const keys = { up: false, left: false, right: false, down: false }
+const keys = { up: false, left: false, right: false, down: false, cheat: false }
 
 function switchKey (key, state) {
   switch (key) {
@@ -277,10 +277,13 @@ function switchKey (key, state) {
     case 's':
       keys.down = state
       break
+    case 'q':
+      keys.cheat = state
+      break
   }
 
   // hack for cheatmode
-  if (state === false && key === 'End') {
+  if (state === false && keys.cheat && key === 'l') {
     player.cheatMode = !player.cheatMode
   }
 }

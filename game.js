@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 'use strict'
 
-import { editor } from '/editor.js'
+import { editor } from './editor.js'
 
 let params = (new URL(document.location)).searchParams;
 window.editMode = !!params.get("edit")

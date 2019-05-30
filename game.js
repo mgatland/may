@@ -168,7 +168,7 @@ function changeRoom (location) {
         npc.pos.x += tileSize / 2
         npc.pos.y += tileSize / 2
         // endgame hack
-        if (player.endGame && !npc.questGiver) {
+        if (player.endGame && !npc.questGiver && !npc.sad) {
           npc.pos.x = -1000 // hide it
         }
       }
@@ -277,7 +277,7 @@ function drawLevel () {
     let y = lineHeight * 3
 
     ctx.font = titleFont
-    ctx.fillText("Snail Inc Courier Service", centerX, y)
+    ctx.fillText("Snail and Co Courier Service", centerX, y)
     ctx.font = defaultFont
     y += lineHeight
     ctx.fillText("Arrow keys or WASD to move", centerX, y)
@@ -311,6 +311,9 @@ function drawNpcs () {
       let text = npc.text.split('\n').reverse()
       if (npc.questGiver && player.endGame) {
         text = 'Thank you!\nTime to party!'.split('\n').reverse()
+      }
+      if (npc.sad && player.endGame) {
+        text = ['I\'m OK!']
       }
       for (let i = 0; i < text.length; i++) {
         ctx.fillText(text[i], x, y - 8 * scale - i * 20)

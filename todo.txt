@@ -11,12 +11,11 @@ todo
 [x] win condition - party host dialogue changes - message changes to 'go home'
 [x] fix jumping - something with yval - you can get extra height or less height 
 
-[ ] title screen with credits (including the font)
-[ ] fix saving and loading and editing
-
+[x] title screen with credits (including the font)
+[x] fix saving and loading and editing
 
 [ ] add the second set of areas, the train and the otherlands
-
+[ ] shave off the edge of the screen
 [ ] the controls are a bit awkward
 
 [ ] music

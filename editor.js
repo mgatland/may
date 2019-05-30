@@ -65,6 +65,7 @@ export const editor = {
     }
 
     function mouseMove (e) {
+      if (!window.editMode) return
       const pos = getMouseXYFromEvent(e)
       const tile = { x: Math.floor(pos.x / 8), y: Math.floor(pos.y / 8) }
       const i = tile.x + tile.y * levelWidth
@@ -81,7 +82,7 @@ export const editor = {
     canvas.addEventListener('mousemove', mouseMove)
     canvas.addEventListener('mousedown', mouseMove)
     canvas.addEventListener('contextmenu', function (e) {
-      e.preventDefault()
+      if (window.editMode) e.preventDefault()
     })
 
     const brushes = {

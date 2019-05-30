@@ -35,9 +35,9 @@ body {
 }
 
 .levelData {
+	position: absolute;
 	max-width: 80%;
 	max-height: 25px;
-	margin-top: -25px;
 	overflow: hidden;
 	font-size: 16px;
 }

@@ -14,6 +14,9 @@ todo
 [ ] title screen with credits (including the font)
 [ ] fix saving and loading and editing
 
+
+[ ] add the second set of areas, the train and the otherlands
+
 [ ] the controls are a bit awkward
 
 [ ] music

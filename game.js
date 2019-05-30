@@ -300,10 +300,13 @@ function drawPartyGoer (x, y) {
 function drawNpcs () {
   for (const npc of npcs) {
     let spriteIndex = 5
+    let flipped = false
     if (npc.active && !npc.sad) {
       spriteIndex = (frame > 40) ? 4 : 3
+      if (npc.pos.x < player.pos.x) flipped = true
+
     }
-    drawSprite(spriteIndex, npc.pos.x, npc.pos.y)
+    drawSprite(spriteIndex, npc.pos.x, npc.pos.y, flipped)
     if (npc.active) {
       ctx.textAlign = 'center'
       const x = Math.floor(npc.pos.x * scale)
@@ -371,7 +374,6 @@ function drawSprite (index, x, y, flipped = false) {
   if (index === 0) return // empty space hack
   if (index === npcPlaceholder && player.endGame && !player.cheatMode) return // don't show npc placeholders in end game
   if (index === partyPlaceholder && !player.cheatMode) return
-  if (index === 2 && Math.abs(player.vel.x) > maxXVel * 0.99) index += 16 // animated snail hack
   const width = 8
   const height = 8
   x = Math.floor(x * scale)
@@ -537,6 +539,18 @@ function getCollidingTiles (pos) {
   return null
 }
 
+function drawPlayer() {
+  //add player head bobbing here
+  let sprite = 2
+  if (player.endGame && locationKey(player.location) === "0x0" && partyGoerCount > 3) {
+    sprite = Math.floor(frame / 15) % 2 === 0 ? 2 : 18
+  } else {
+    if (Math.abs(player.vel.x) > maxXVel * 0.99) sprite = 18
+  }
+  
+  drawSprite(sprite, player.pos.x, player.pos.y, player.facingLeft)
+}
+
 function draw () {
   const rightEdge = tileSize * levelWidth * scale
   ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -544,6 +558,6 @@ function draw () {
   ctx.fillRect(rightEdge, 0, canvas.width - rightEdge, canvas.height)
   drawLevel()
   drawNpcs()
-  if (!menu) drawSprite(2, player.pos.x, player.pos.y, player.facingLeft)
+  if (!menu) drawPlayer()
   requestAnimationFrame(tick)
 }

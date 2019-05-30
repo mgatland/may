@@ -538,7 +538,10 @@ function getCollidingTiles (pos) {
 }
 
 function draw () {
+  const rightEdge = tileSize * levelWidth * scale
   ctx.clearRect(0, 0, canvas.width, canvas.height)
+  ctx.fillStyle = "black"
+  ctx.fillRect(rightEdge, 0, canvas.width - rightEdge, canvas.height)
   drawLevel()
   drawNpcs()
   if (!menu) drawSprite(2, player.pos.x, player.pos.y, player.facingLeft)

@@ -281,7 +281,7 @@ function drawLevel () {
     ctx.fillText("Snail and Co Courier Service", centerX, y)
     ctx.font = defaultFont
     y += lineHeight
-    ctx.fillText("Arrow keys or WASD to move", centerX, y)
+    ctx.fillText("Arrow keys | WASD | Spacebar", centerX, y)
     y += lineHeight
     ctx.fillText("Press any key", centerX, y)
     y += lineHeight * 6
@@ -346,6 +346,7 @@ function switchKey (key, state) {
       break
     case 'ArrowUp':
     case 'w':
+    case ' ':
       keys.up = state
       break
     case 'ArrowDown':

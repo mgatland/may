@@ -272,6 +272,13 @@ function drawLevel () {
     ctx.fillText(message, 38, 24)
   }
 
+  //hack: note if you get up the cliff side
+  const cliffPos = {x: 148, y: 92}
+  if (locationKey(player.location) === '7x0' && close(player.pos, cliffPos)) {
+    ctx.font = defaultFont
+    ctx.fillText("I made it!", 420, 350)
+  }
+
   if (menu) {
     const centerX = tileSize * (levelWidth / 2) * scale
     const lineHeight = 40

@@ -335,8 +335,8 @@ function drawNpcs () {
 
 const keys = { up: false, left: false, right: false, down: false, cheat: false }
 
-function switchKey (key, state) {
-
+function switchKey (e, state) {
+  const key = e.key
   if (menu) {
       newGame()
     return
@@ -346,22 +346,27 @@ function switchKey (key, state) {
     case 'ArrowLeft':
     case 'a':
       keys.left = state
+      e.preventDefault()
       break
     case 'ArrowRight':
     case 'd':
       keys.right = state
+      e.preventDefault()
       break
     case 'ArrowUp':
     case 'w':
     case ' ':
       keys.up = state
+      e.preventDefault()
       break
     case 'ArrowDown':
     case 's':
       keys.down = state
+      e.preventDefault()
       break
     case 'q':
       keys.cheat = state
+      e.preventDefault()
       break
   }
 
@@ -372,11 +377,11 @@ function switchKey (key, state) {
 }
 
 window.addEventListener('keydown', function (e) {
-  switchKey(e.key, true)
+  switchKey(e, true)
 })
 
 window.addEventListener('keyup', function (e) {
-  switchKey(e.key, false)
+  switchKey(e, false)
 })
 
 function drawSprite (index, x, y, flipped = false) {
